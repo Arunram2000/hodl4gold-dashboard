@@ -8,12 +8,13 @@ import { useWeb3React } from "@web3-react/core";
 
 const App: React.FC = () => {
   useEagerConnect();
-  const { account } = useWeb3React();
+  const { account,active } = useWeb3React();
+  console.log(active)
   return (
     <div className="app">
       <Header />
       <Routes>
-        {account ? (
+        {active ? (
           <Route path="/" element={<Dashboard />} />
         ) : (
           <Route path="/" element={<ConnectWallet />} />

@@ -16,7 +16,7 @@ const ConnectWallet: React.FC = () => {
     <div className="backdrop">
       <div className="wallet_modal">
         <h1 className="mb-20">Connect Wallet</h1>
-        <div className="wallet" onClick={() => activate(Injected)}>
+        <div className="wallet" onClick={() => activate(Injected,(err)=>{if(err && err instanceof UnsupportedChainIdError){switchNetwork()}})}>
           <img src={metamask} alt="metamask" />
         </div>
       </div>

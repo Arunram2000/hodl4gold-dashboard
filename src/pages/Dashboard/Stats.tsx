@@ -8,6 +8,9 @@ import dec from "../../assets/icons/dec.svg";
 import inc from "../../assets/icons/inc.svg";
 import pending_rewards from "../../assets/icons/pending_rewards.svg";
 import { getPrice } from "../../Utils/getH4GPrice";
+import {getHoldings} from "../../Utils/getHolding"
+import {totalClaimed,remainingRewards} from "../../Utils/getTotalRewardsClaimed"
+import { useWeb3React } from "@web3-react/core";
 
 type IStatsCardProps = {
   title: string;
@@ -61,9 +64,17 @@ const StatsCard: React.FC<IStatsCardProps> = ({
 
 const Stats: React.FC = () => {
   const [price, setPrice] = useState("");
+  const [holdings,setHoldings] = useState("")
+  const [totalRewards,setTotalRewards] = useState("")
+  const [pendingRewards,setPendingRewards] = useState("")
+
+  const {account} = useWeb3React()
 
   useEffect(() => {
     Promise.resolve(getPrice()).then((price) => setPrice(price));
+    Promise.resolve(getHoldings(account)).then((holds)=>{setHoldings(holds)});
+    Promise.resolve(totalClaimed(account)).then((claims)=>setTotalRewards(String(claims)))
+    Promise.resolve(remainingRewards(account)).then((remains)=>setPendingRewards(remains))
   }, []);
   return (
     <div className="stats mb-30">
@@ -77,14 +88,14 @@ const Stats: React.FC = () => {
         />
         <StatsCard
           title="holding balance"
-          value={"00.07"}
-          token={"USD"}
+          value={holdings}
+          token={"H4G"}
           icon={heart}
         />
         <StatsCard
-          title="DAILY AVERAGE EARNING"
-          value={"00.07"}
-          token={"USD"}
+          title="DAILY AVERAGE EARNING(under Dev)"
+          value={"0"}
+          token={"H4G"}
           icon={cup}
           label={{
             name: "calculate",
@@ -93,8 +104,8 @@ const Stats: React.FC = () => {
         />
         <StatsCard
           title="MY TOTAL REWARDS"
-          value={"00.07"}
-          token={"USD"}
+          value={totalRewards}
+          token={"BUSD"}
           icon={dollar}
           trade={"inc"}
           label={{
@@ -104,8 +115,8 @@ const Stats: React.FC = () => {
         />
         <StatsCard
           title="MY PENDING REWARDS"
-          value={"00.07"}
-          token={"USD"}
+          value={pendingRewards}
+          token={"BUSD"}
           icon={pending_rewards}
           label={{
             name: "claim",
