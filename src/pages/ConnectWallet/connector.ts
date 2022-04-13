@@ -2,7 +2,7 @@ import { InjectedConnector } from "@web3-react/injected-connector";
 import { ethers } from "ethers";
 
 export const Injected = new InjectedConnector({
-  supportedChainIds: [56, 4],
+  supportedChainIds: [56],
 });
 
 const switchRequest = (chainId = 56) => {
