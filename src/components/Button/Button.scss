@@ -1,0 +1,30 @@
+%base-styles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  outline: none;
+  border: none;
+  padding: 0.8rem 4rem;
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 400;
+  border-radius: 4px;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  @extend %base-styles;
+  background-color: var(--btn-primary);
+}
+
+.btn-secondary {
+  @extend %base-styles;
+  background-color: var(--btn-secondary);
+}
+
+.btn-error {
+  @extend %base-styles;
+  background-color: var(--btn-error);
+}

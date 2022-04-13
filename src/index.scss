@@ -1,0 +1,135 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+:root {
+  --background: #e5e5e5;
+  --btn-primary: #006039;
+  --btn-secondary: #4f307c;
+  --btn-error: #ff6347;
+  --header-height: 70px;
+  --link: #6d7080;
+  --text-primary: #495057;
+  --text-secondary: #9599ad;
+  --text-success: #0ab39c;
+  --text-error: #f06548;
+  --text-warning: #f7b84b;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 1.4rem;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  line-height: 1.5;
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+iframe {
+  display: none;
+}
+
+a {
+  text-decoration: none;
+  color: var(--link);
+  font-size: 1.5rem;
+  line-height: 2.4rem;
+}
+
+.mx {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.pad {
+  padding: 0 5rem;
+
+  @media (max-width: 768px) {
+    padding: 0 3rem;
+  }
+  @media (max-width: 576px) {
+    padding: 0 2rem;
+  }
+}
+
+@for $i from 5 to 51 {
+  .p-#{$i} {
+    padding: $i + px;
+  }
+  .pt-#{$i} {
+    padding-top: $i + px;
+  }
+  .pl-#{$i} {
+    padding-left: $i + px;
+  }
+  .pr-#{$i} {
+    padding-right: $i + px;
+  }
+  .pb-#{$i} {
+    padding-bottom: $i + px;
+  }
+  .m-#{$i} {
+    margin: $i + px;
+  }
+  .mt-#{$i} {
+    margin-top: $i + px;
+  }
+  .ml-#{$i} {
+    margin-left: $i + px;
+  }
+  .mr-#{$i} {
+    margin-right: $i + px;
+  }
+  .mb-#{$i} {
+    margin-bottom: $i + px;
+  }
+}
+
+p {
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.01rem;
+}
+
+h2 {
+  font-size: 2.2rem;
+  line-height: 3.6rem;
+  letter-spacing: 0.04rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+h3 {
+  font-size: 2.2rem;
+  line-height: 3rem;
+  letter-spacing: 0.04rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+h4 {
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  letter-spacing: 0.02rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+h5 {
+  font-size: 1.4rem;
+  line-height: 2rem;
+  letter-spacing: 0.02rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}

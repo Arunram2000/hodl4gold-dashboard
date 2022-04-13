@@ -1,0 +1,218 @@
+main.dashboard_wrapper {
+  .dashboard {
+    padding-top: 2rem;
+    padding-bottom: 5rem;
+
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+    }
+  }
+}
+
+.stats {
+  display: grid;
+  place-items: center;
+
+  &_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    @media (max-width: 600px) {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .stats_card {
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.5rem;
+      background-color: #fff;
+      box-shadow: 0px 1px 2px rgba(56, 65, 74, 0.14902);
+      gap: 1rem;
+
+      &-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+
+        section {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 1rem;
+
+          p {
+            text-transform: uppercase;
+          }
+
+          span {
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 0.2rem 1rem;
+
+            &.info {
+              color: #3577f1;
+              background-color: #edf3ff;
+            }
+            &.error {
+              color: var(--text-error);
+              background-color: rgba($color: var(--text-error), $alpha: 1);
+            }
+            &.success {
+              color: var(--text-success);
+              background-color: rgba(10, 179, 156, 0.101961);
+            }
+            &.warning {
+              color: var(--text-warning);
+              background-color: #fef4e4;
+            }
+          }
+        }
+      }
+
+      &-content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+    }
+  }
+}
+
+.graphs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  .chart_wrapper {
+    background: #ffffff;
+    box-shadow: 0px 1px 2px rgba(56, 65, 74, 0.14902);
+    border-radius: 4px;
+
+    .chart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.6rem;
+      border-bottom: 1px solid #e9ebec;
+      flex-wrap: wrap;
+      gap: 1rem;
+
+      section {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+    }
+
+    .chart-content {
+      padding: 1.6rem;
+    }
+  }
+}
+
+.token_stats {
+  .token_controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 4rem;
+
+    .timer {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      strong {
+        font-weight: 500;
+      }
+
+      > div {
+        display: grid;
+        grid-template-columns: auto auto;
+        background-color: #f7b84b;
+
+        > p {
+          background-color: rgba(255, 255, 255, 0.14902);
+          width: 45px;
+          height: 100%;
+        }
+
+        section {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          padding: 0.5rem 1rem;
+          gap: 1rem;
+
+          h3 {
+            font-weight: 700;
+            color: #fff;
+          }
+          p {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  .token_wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.4rem;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .token_card {
+      background: #ffffff;
+      box-shadow: 0px 1px 2px rgba(56, 65, 74, 0.14902);
+      border-radius: 4px;
+      padding: 1.5rem;
+
+      &-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+
+      .flex {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+
+        span {
+          background: #f3f6f9;
+          border-radius: 4px;
+          font-size: 1rem;
+          font-weight: 600;
+          padding: 0.1rem 1rem;
+          white-space: nowrap;
+
+          &.dec {
+            color: var(--text-error);
+            background-color: rgba(255, 99, 71, 0.1);
+          }
+          &.inc {
+            color: var(--text-success);
+            background-color: rgba(10, 179, 156, 0.101961);
+          }
+        }
+      }
+    }
+  }
+}
