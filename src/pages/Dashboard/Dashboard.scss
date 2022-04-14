@@ -21,6 +21,11 @@ main.dashboard_wrapper {
     flex-wrap: wrap;
     justify-content: center;
 
+    @media (max-width: 768px) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
     @media (max-width: 600px) {
       display: grid;
       grid-template-columns: 1fr;
@@ -89,7 +94,7 @@ main.dashboard_wrapper {
   grid-template-columns: 1fr 1fr;
   gap: 5rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: 800px) {
     grid-template-columns: 1fr;
   }
 
@@ -111,6 +116,39 @@ main.dashboard_wrapper {
         display: flex;
         align-items: center;
         gap: 0.5rem;
+
+        .timeframe_dropdown {
+          position: relative;
+
+          > p {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            span {
+              text-transform: capitalize;
+            }
+          }
+
+          .dropdown_list {
+            position: absolute;
+            top: 100%;
+            padding: 2rem;
+            border-radius: 4px;
+            background-color: #fff;
+            box-shadow: var(--dropdown-box-shadow);
+            width: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.5rem;
+
+            p {
+              text-transform: capitalize;
+              text-align: left;
+              cursor: pointer;
+            }
+          }
+        }
       }
     }
 
