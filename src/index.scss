@@ -34,6 +34,7 @@ body {
   font-family: "Poppins", sans-serif;
   height: 100vh;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 iframe {
@@ -97,7 +98,7 @@ a {
 }
 
 p {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   line-height: 2rem;
   color: var(--text-secondary);
   letter-spacing: 0.01rem;
@@ -112,7 +113,7 @@ h2 {
 }
 
 h3 {
-  font-size: 2.2rem;
+  font-size: 2rem;
   line-height: 3rem;
   letter-spacing: 0.04rem;
   color: var(--text-primary);
@@ -120,7 +121,7 @@ h3 {
 }
 
 h4 {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   line-height: 2.4rem;
   letter-spacing: 0.02rem;
   color: var(--text-primary);

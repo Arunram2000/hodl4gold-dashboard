@@ -155,20 +155,10 @@
   height: 100%;
   padding: 2rem;
   overflow-y: auto;
-  visibility: hidden;
-  right: -360px;
-  transition: right 250ms linear;
-  transition-delay: 100ms;
 
   @media (max-width: 576px) {
     max-width: 300px;
     right: -300px;
-  }
-
-  &.active {
-    right: 0;
-    visibility: visible;
-    transition: right 250ms linear;
   }
 
   .header_controls {

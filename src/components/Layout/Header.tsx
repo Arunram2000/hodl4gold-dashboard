@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 import "./Header.scss";
 import logo from "../../assets/images/logo_dark.png";
@@ -71,10 +72,19 @@ const Header: React.FC = () => {
         className={sidebar ? "sidebar_backdrop active" : "sidebar_backdrop"}
         onClick={() => setSidebar(false)}
       />
-      <aside className={sidebar ? "sidebar active" : "sidebar"}>
-        {renderHeaderLinks}
-        {renderHeaderControls}
-      </aside>
+      <AnimatePresence exitBeforeEnter>
+        {sidebar && (
+          <motion.aside
+            className={"sidebar"}
+            initial={{ right: -300 }}
+            animate={{ right: 0 }}
+            exit={{ right: -300 }}
+          >
+            {renderHeaderLinks}
+            {renderHeaderControls}
+          </motion.aside>
+        )}
+      </AnimatePresence>
     </>
   );
 };
