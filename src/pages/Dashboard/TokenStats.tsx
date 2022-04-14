@@ -53,13 +53,13 @@ const TokenStats: React.FC = () => {
     <div className="token_stats">
       <div className="token_controls">
         <div className="timer">
-          <strong>next payout starting in</strong>
+          <strong>next payout starting in (under dev)</strong>
           <div>
             <p>
               <img src="" alt="" />
             </p>
             <section>
-              <h3>01 h : 28 m : 12 s </h3>
+              <h3>xx h : xx m : xx s </h3>
               <p>processing | 0%</p>
             </section>
           </div>
@@ -94,9 +94,9 @@ const TokenStats: React.FC = () => {
           }}
         />
         <TokenStatsCard
-          title="Total Rewards Claimed"
+          title="Total Rewards Claimed(under dev)"
           icon={claimed}
-          value={"280.05K"}
+          value={"xxxx"}
           label={{
             value: "16.24",
             trade: "inc",
