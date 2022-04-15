@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -9,15 +9,42 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { getChartsData } from "../../api";
 
 import arrow from "../../assets/icons/arrow.svg";
-import { chartData } from "../../data/chart";
+import { IChart } from "../../constants/types";
+// import { chartData } from "../../data/chart";
 
 const timeframeLists = ["monthly", "weekly", "yearly"];
+
+const getTimestamp = (timeframe: string) => {
+  const currentDate = new Date();
+  if (timeframe === "monthly") {
+    const pastDate = currentDate.setDate(currentDate.getDate() - 30);
+    return parseInt(String(pastDate / 1000));
+  }
+  if (timeframe === "yearly") {
+    const pastDate = currentDate.setDate(currentDate.getDate() - 365);
+    return parseInt(String(pastDate / 1000));
+  }
+  const pastDate = currentDate.setDate(currentDate.getDate() - 7);
+  return parseInt(String(pastDate / 1000));
+};
 
 const Chart: React.FC = () => {
   const [timeframe, setTimeFrame] = useState("monthly");
   const [isActive, setIsActive] = useState(false);
+  const [chartData, setChartData] = useState<IChart[]>([]);
+
+  const handleGetChartsData = useCallback(async () => {
+    const timestamp = getTimestamp(timeframe);
+    const data = await getChartsData(String(timestamp));
+    if (data) setChartData(data);
+  }, [timeframe]);
+
+  useEffect(() => {
+    handleGetChartsData();
+  }, [handleGetChartsData]);
 
   return (
     <div className="chart_wrapper">
@@ -74,24 +101,24 @@ const Chart: React.FC = () => {
                 <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <XAxis dataKey="name" fontSize={10} />
-            <YAxis fontSize={10} />
+            <XAxis dataKey="timestamp" fontSize={10} />
+            <YAxis fontSize={10} dataKey="Burns" />
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip />
             <Area
               type="monotone"
-              dataKey="uv"
+              dataKey="Burns"
               stroke="#8884d8"
               fillOpacity={1}
               fill="url(#colorUv)"
             />
-            <Area
+            {/* <Area
               type="monotone"
               dataKey="pv"
               stroke="#82ca9d"
               fillOpacity={1}
               fill="url(#colorPv)"
-            />
+            /> */}
           </AreaChart>
         </ResponsiveContainer>
       </div>
