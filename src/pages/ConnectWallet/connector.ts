@@ -25,7 +25,7 @@ const switchRequest = async(chainId = 56) => {
           },
         ],
       }).then(async()=>{
-        return await  ethereum.request({
+        return await ethereum.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: ethers.utils.hexlify(56) }],
         });

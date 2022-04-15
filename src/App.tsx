@@ -8,7 +8,7 @@ import { useWeb3React } from "@web3-react/core";
 
 const App: React.FC = () => {
   useEagerConnect();
-  const { account,active } = useWeb3React();
+  const { active } = useWeb3React();
   console.log(active)
   return (
     <div className="app">
