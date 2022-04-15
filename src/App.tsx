@@ -9,7 +9,11 @@ import { useWeb3React } from "@web3-react/core";
 const App: React.FC = () => {
   useEagerConnect();
   const { active } = useWeb3React();
+<<<<<<< HEAD
   console.log(active)
+=======
+
+>>>>>>> 214cd0d89bcb337b4e2a925cf0daa6501f36831b
   return (
     <div className="app">
       <Header />

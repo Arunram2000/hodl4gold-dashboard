@@ -25,7 +25,7 @@ const TokenStatsCard: React.FC<ITokenStatsCardProps> = ({
   icon,
 }) => {
   return (
-    <div className="token_card mb-30">
+    <div className="token_card">
       <div className="token_card-header">
         <p>{title}</p>
         <img src={icon} alt="trade" width={40} height={40} />
@@ -40,15 +40,17 @@ const TokenStatsCard: React.FC<ITokenStatsCardProps> = ({
 };
 
 const TokenStats: React.FC = () => {
-  const [totalHolds,setholders] = useState(0);
-  const [totalSupply,setTotalSupply] = useState("0")
-  const [distributed,setDistributed] = useState("0");
+  const [totalHolds, setholders] = useState(0);
+  const [totalSupply, setTotalSupply] = useState("0");
+  const [distributed, setDistributed] = useState("0");
 
-  useEffect(()=>{
-    Promise.resolve(totalTokenHolders()).then((holders)=>setholders(holders))
-    Promise.resolve(getTotalSupply()).then((supply)=>setTotalSupply(supply))
-    Promise.resolve(totalDividendDistributed()).then((dis)=>setDistributed(dis))
-  },[])
+  useEffect(() => {
+    Promise.resolve(totalTokenHolders()).then((holders) => setholders(holders));
+    Promise.resolve(getTotalSupply()).then((supply) => setTotalSupply(supply));
+    Promise.resolve(totalDividendDistributed()).then((dis) =>
+      setDistributed(dis)
+    );
+  }, []);
   return (
     <div className="token_stats">
       <div className="token_controls">

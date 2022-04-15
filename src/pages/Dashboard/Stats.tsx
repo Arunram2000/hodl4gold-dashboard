@@ -8,8 +8,11 @@ import dec from "../../assets/icons/dec.svg";
 import inc from "../../assets/icons/inc.svg";
 import pending_rewards from "../../assets/icons/pending_rewards.svg";
 import { getPrice } from "../../Utils/getH4GPrice";
-import {getHoldings} from "../../Utils/getHolding"
-import {totalClaimed,remainingRewards} from "../../Utils/getTotalRewardsClaimed"
+import { getHoldings } from "../../Utils/getHolding";
+import {
+  totalClaimed,
+  remainingRewards,
+} from "../../Utils/getTotalRewardsClaimed";
 import { useWeb3React } from "@web3-react/core";
 
 type IStatsCardProps = {
@@ -64,18 +67,26 @@ const StatsCard: React.FC<IStatsCardProps> = ({
 
 const Stats: React.FC = () => {
   const [price, setPrice] = useState("");
-  const [holdings,setHoldings] = useState("")
-  const [totalRewards,setTotalRewards] = useState("")
-  const [pendingRewards,setPendingRewards] = useState("")
+  const [holdings, setHoldings] = useState("");
+  const [totalRewards, setTotalRewards] = useState("");
+  const [pendingRewards, setPendingRewards] = useState("");
 
-  const {account} = useWeb3React()
+  const { account } = useWeb3React();
 
   useEffect(() => {
-    Promise.resolve(getPrice()).then((price) => setPrice(price));
-    Promise.resolve(getHoldings(account)).then((holds)=>{setHoldings(holds)});
-    Promise.resolve(totalClaimed(account)).then((claims)=>setTotalRewards(String(claims)))
-    Promise.resolve(remainingRewards(account)).then((remains)=>setPendingRewards(remains))
-  }, []);
+    if (account) {
+      Promise.resolve(getPrice()).then((price) => setPrice(price));
+      Promise.resolve(getHoldings(account)).then((holds) => {
+        setHoldings(holds);
+      });
+      Promise.resolve(totalClaimed(account)).then((claims) =>
+        setTotalRewards(String(claims))
+      );
+      Promise.resolve(remainingRewards(account)).then((remains) =>
+        setPendingRewards(remains)
+      );
+    }
+  }, [account]);
   return (
     <div className="stats mb-30">
       <div className="stats_wrapper">
