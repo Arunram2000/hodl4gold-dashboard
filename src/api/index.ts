@@ -1,5 +1,7 @@
 import axios from "axios";
 import moment from "moment";
+import _ from "lodash";
+
 import { IChart } from "../constants/types";
 
 const BASE_URL =
@@ -24,11 +26,11 @@ export const getChartsData = async (timestamp: string) => {
     const refactoredData = h4Gburns.map((val) => {
       return {
         ...val,
-        timestamp: moment(Number(val.timestamp) * 1000).format("L"),
+        timestamp: moment(Number(val.timestamp) * 1000).format("MMM DD"),
       };
     });
 
-    return refactoredData;
+    return _.uniqBy(refactoredData, "timestamp").reverse();
   } catch (error) {
     console.log(error);
     return;

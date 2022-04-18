@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
-  CartesianGrid,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -13,7 +12,6 @@ import { getChartsData } from "../../api";
 
 import arrow from "../../assets/icons/arrow.svg";
 import { IChart } from "../../constants/types";
-// import { chartData } from "../../data/chart";
 
 const timeframeLists = ["monthly", "weekly", "yearly"];
 
@@ -32,7 +30,7 @@ const getTimestamp = (timeframe: string) => {
 };
 
 const Chart: React.FC = () => {
-  const [timeframe, setTimeFrame] = useState("monthly");
+  const [timeframe, setTimeFrame] = useState("weekly");
   const [isActive, setIsActive] = useState(false);
   const [chartData, setChartData] = useState<IChart[]>([]);
 
@@ -94,16 +92,26 @@ const Chart: React.FC = () => {
             <defs>
               <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                <stop offset="95%" stopColor="#8884d8" stopOpacity={0.3} />
               </linearGradient>
               <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0.3} />
               </linearGradient>
             </defs>
-            <XAxis dataKey="timestamp" fontSize={10} />
-            <YAxis fontSize={10} dataKey="Burns" />
-            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="timestamp" />
+            <YAxis
+              dataKey="Burns"
+              width={0}
+              domain={[0, "dataMax + 10"]}
+              tick={false}
+              tickFormatter={(value) =>
+                new Intl.NumberFormat("en", {
+                  notation: "compact",
+                  compactDisplay: "short",
+                }).format(value)
+              }
+            />
             <Tooltip />
             <Area
               type="monotone"
