@@ -13,7 +13,10 @@ import {
   totalClaimed,
   remainingRewards,
 } from "../../Utils/getTotalRewardsClaimed";
+import { Contract } from "ethers";
+import { getDividendContract } from "../../Utils/getDividendContract";
 import { useWeb3React } from "@web3-react/core";
+import abi from "../../Utils/constants/H4G_ABI.json";
 
 type IStatsCardProps = {
   title: string;
@@ -25,6 +28,19 @@ type IStatsCardProps = {
     variant?: "error" | "success" | "warning" | "info";
   };
   trade?: "inc" | "dec";
+};
+
+type IStatsCardBProps = {
+  title: string;
+  value: string;
+  token: string;
+  icon: string;
+  label?: {
+    name: string;
+    variant?: "error" | "success" | "warning" | "info";
+  };
+  trade?: "inc" | "dec";
+  funcc: () => Promise<void>;
 };
 
 const StatsCard: React.FC<IStatsCardProps> = ({
@@ -65,13 +81,78 @@ const StatsCard: React.FC<IStatsCardProps> = ({
   );
 };
 
+const StatsCardwithButton: React.FC<IStatsCardBProps> = ({
+  title,
+  label,
+  token,
+  value,
+  trade,
+  icon,
+  funcc,
+}) => {
+  return (
+    <div className="stats_card">
+      <div className="stats_card-header">
+        <section onClick={async () => funcc()}>
+          <p>{title}</p>
+          {label && <span className={label.variant}>{label.name}</span>}
+        </section>
+        {trade && (
+          <img
+            src={trade === "dec" ? dec : inc}
+            alt="trade"
+            width={18}
+            height={18}
+          />
+        )}
+      </div>
+      <div className="stats_card-content">
+        <img src={icon} alt="icon" width={40} height={40} />
+        <h2>
+          {new Intl.NumberFormat("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 8,
+          }).format(Number(value))}
+          &nbsp;{token}
+        </h2>
+      </div>
+    </div>
+  );
+};
+
 const Stats: React.FC = () => {
   const [price, setPrice] = useState("");
   const [holdings, setHoldings] = useState("");
   const [totalRewards, setTotalRewards] = useState("");
   const [pendingRewards, setPendingRewards] = useState("");
 
-  const { account } = useWeb3React();
+  const { account, library } = useWeb3React();
+
+  //const account = "0x354ec4719169a3d0b695ecec1953d3d869cd8f26";
+
+  const claim = async () => {
+    const contract = getDividendContract();
+    const newc = new Contract(contract.address, abi, library);
+
+    //encoding data
+    const data = newc.interface.encodeFunctionData("withdraw");
+
+    const tx = {
+      to: contract.address,
+      data: data,
+    };
+
+    library
+      .getSigner()
+      .estimateGas(tx)
+      .then((estimate) => {
+        const newtxn = {
+          ...tx,
+          gasLimit: estimate,
+        };
+        library.getSigner().sendTransaction(newtxn);
+      });
+  };
 
   useEffect(() => {
     if (account) {
@@ -102,16 +183,6 @@ const Stats: React.FC = () => {
           value={holdings}
           token={"H4G"}
           icon={heart}
-        />
-        <StatsCard
-          title="DAILY AVERAGE EARNING(under Dev)"
-          value={"0"}
-          token={"H4G"}
-          icon={cup}
-          label={{
-            name: "calculate",
-            variant: "info",
-          }}
         />
         <StatsCard
           title="MY TOTAL REWARDS"

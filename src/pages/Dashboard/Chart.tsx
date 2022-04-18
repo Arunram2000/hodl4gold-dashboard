@@ -47,7 +47,7 @@ const Chart: React.FC = () => {
   return (
     <div className="chart_wrapper">
       <div className="chart-header">
-        <h4>Reward distribution vs payouts (under dev)</h4>
+        <h4>Burn History</h4>
         <section>
           <h5>TIMEFRAME :</h5>{" "}
           <div
@@ -84,7 +84,7 @@ const Chart: React.FC = () => {
         </section>
       </div>
       <div className="chart-content">
-        <ResponsiveContainer width={"100%"} height={300}>
+        <ResponsiveContainer width={"100%"} height={180}>
           <AreaChart
             data={chartData}
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}

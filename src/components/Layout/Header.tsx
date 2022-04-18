@@ -17,12 +17,28 @@ const Header: React.FC = () => {
 
   const renderHeaderControls = (
     <div className="header_controls">
-      <Button>
+      <Button
+        onClick={() =>
+          window.open(
+            "https://bscscan.com/token/0xE8c4bEce93084D649fB630886b5332942b643BB9?a=" +
+              account
+          )
+        }
+      >
         {account
           ? `${account.slice(0, 6)}...${account.slice(account.length - 6)}`
           : "Connect wallet"}
       </Button>
-      <Button variant="secondary">Buy H4G Now.</Button>
+      <Button
+        variant="secondary"
+        onClick={() =>
+          window.open(
+            "https://pancakeswap.finance/swap?outputCurrency=0xE8c4bEce93084D649fB630886b5332942b643BB9"
+          )
+        }
+      >
+        Buy H4G Now.
+      </Button>
     </div>
   );
 
@@ -33,7 +49,16 @@ const Header: React.FC = () => {
           <input type="search" placeholder="Explore with address" />
         </div>
         <Link to={"/"}>Home</Link>
-        <Link to={"/"}>Smart Contracts</Link>
+        <Link
+          onClick={() =>
+            window.open(
+              "https://bscscan.com/address/0xE8c4bEce93084D649fB630886b5332942b643BB9"
+            )
+          }
+          to={"/"}
+        >
+          Smart Contracts
+        </Link>
       </div>
     </>
   );
