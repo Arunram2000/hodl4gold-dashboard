@@ -112,6 +112,12 @@
 
 .footer {
   background-color: #fff;
+  &.scroll-inactive {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
   footer {
     display: flex;
     align-items: center;

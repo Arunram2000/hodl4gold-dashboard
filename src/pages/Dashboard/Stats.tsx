@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import heart from "../../assets/icons/heart.svg";
 import line from "../../assets/icons/line.svg";
 import dollar from "../../assets/icons/dollar.svg";
-import cup from "../../assets/icons/cup.svg";
+// import cup from "../../assets/icons/cup.svg";
 import dec from "../../assets/icons/dec.svg";
 import inc from "../../assets/icons/inc.svg";
 import pending_rewards from "../../assets/icons/pending_rewards.svg";
