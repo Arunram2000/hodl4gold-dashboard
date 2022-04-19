@@ -136,7 +136,7 @@ const Stats: React.FC = () => {
           value={price}
           token={"USD"}
           icon={line}
-          trade={"dec"}
+          //trade={"dec"}
         />
         <StatsCard
           title="holding balance"
@@ -149,11 +149,7 @@ const Stats: React.FC = () => {
           value={totalRewards}
           token={"BUSD"}
           icon={dollar}
-          trade={"inc"}
-          label={{
-            name: "Reinvest",
-            variant: "warning",
-          }}
+          //trade={"inc"}
         />
         <StatsCard
           title="MY PENDING REWARDS"
