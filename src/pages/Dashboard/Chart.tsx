@@ -112,7 +112,7 @@ const Chart: React.FC = () => {
                 }).format(value)
               }
             />
-            <Tooltip />
+            <Tooltip formatter={(val) => Number(val) * Math.pow(10, 9)} />
             <Area
               type="monotone"
               dataKey="Burns"
