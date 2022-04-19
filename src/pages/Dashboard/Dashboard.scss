@@ -63,6 +63,7 @@ main.dashboard_wrapper {
             &.info {
               color: #3577f1;
               background-color: #edf3ff;
+              cursor: pointer;
             }
             &.error {
               color: var(--text-error);
@@ -71,10 +72,12 @@ main.dashboard_wrapper {
             &.success {
               color: var(--text-success);
               background-color: rgba(10, 179, 156, 0.101961);
+              cursor: pointer;
             }
             &.warning {
               color: var(--text-warning);
               background-color: #fef4e4;
+              cursor: pointer;
             }
           }
         }

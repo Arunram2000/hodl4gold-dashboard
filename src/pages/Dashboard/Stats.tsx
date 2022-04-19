@@ -28,19 +28,7 @@ type IStatsCardProps = {
     variant?: "error" | "success" | "warning" | "info";
   };
   trade?: "inc" | "dec";
-};
-
-type IStatsCardBProps = {
-  title: string;
-  value: string;
-  token: string;
-  icon: string;
-  label?: {
-    name: string;
-    variant?: "error" | "success" | "warning" | "info";
-  };
-  trade?: "inc" | "dec";
-  funcc: () => Promise<void>;
+  func?: () => Promise<void>;
 };
 
 const StatsCard: React.FC<IStatsCardProps> = ({
@@ -50,13 +38,18 @@ const StatsCard: React.FC<IStatsCardProps> = ({
   value,
   trade,
   icon,
+  func,
 }) => {
   return (
     <div className="stats_card">
       <div className="stats_card-header">
         <section>
           <p>{title}</p>
-          {label && <span className={label.variant}>{label.name}</span>}
+          {label && (
+            <span onClick={() => func()} className={label.variant}>
+              {label.name}
+            </span>
+          )}
         </section>
         {trade && (
           <img
@@ -129,6 +122,7 @@ const Stats: React.FC = () => {
       );
     }
   }, [account]);
+
   return (
     <div className="stats mb-30">
       <div className="stats_wrapper">
@@ -165,6 +159,7 @@ const Stats: React.FC = () => {
             name: "claim",
             variant: "success",
           }}
+          func={claim}
         />
       </div>
     </div>

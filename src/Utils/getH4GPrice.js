@@ -10,7 +10,7 @@ import {
 } from "@pancakeswap/sdk";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { RPC_URL } from "./config";
-import { utils, BigNumber } from "ethers";
+import { utils } from "ethers";
 
 const HODL4GOLD = new Token(
   ChainId.MAINNET,
