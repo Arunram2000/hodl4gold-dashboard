@@ -85,27 +85,32 @@ const Stats: React.FC = () => {
   //const account = "0x354ec4719169a3d0b695ecec1953d3d869cd8f26";
 
   const claim = async () => {
-    const contract = getDividendContract();
-    const newc = new Contract(contract.address, abi, library);
+    if (Number(pendingRewards) > 0) {
+      const contract = getDividendContract();
+      const newc = new Contract(contract.address, abi, library);
 
-    //encoding data
-    const data = newc.interface.encodeFunctionData("claim");
+      //encoding data
+      const data = newc.interface.encodeFunctionData("claim");
 
-    const tx = {
-      to: contract.address,
-      data: data,
-    };
+      const tx = {
+        to: contract.address,
+        data: data,
+      };
 
-    library
-      .getSigner()
-      .estimateGas(tx)
-      .then((estimate) => {
-        const newtxn = {
-          ...tx,
-          gasLimit: estimate,
-        };
-        library.getSigner().sendTransaction(newtxn);
-      });
+      return library
+        .getSigner()
+        .estimateGas(tx)
+        .then((estimate) => {
+          const newtxn = {
+            ...tx,
+            gasLimit: estimate,
+          };
+          library.getSigner().sendTransaction(newtxn);
+        });
+    } else {
+      window.alert("stake to claim");
+      return;
+    }
   };
 
   useEffect(() => {

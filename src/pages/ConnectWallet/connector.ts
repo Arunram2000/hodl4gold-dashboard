@@ -10,6 +10,7 @@ export const Injected = new InjectedConnector({
 export const walletConnect = new WalletConnectConnector({
   rpc: { 56: "https://bsc-dataseed3.binance.org/" },
   qrcode: true,
+  pollingInterval: 10000,
 });
 
 const switchRequest = async (chainId = 56) => {

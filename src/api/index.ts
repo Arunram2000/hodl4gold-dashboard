@@ -27,7 +27,7 @@ export const getChartsData = async (timestamp: string) => {
     const refactoredData = h4Gburns.map((val) => {
       return {
         ...val,
-        Burns: ethers.utils.formatEther(val.Burns),
+        Burns: ethers.utils.formatUnits(val.Burns, 9),
         timestamp: moment(Number(val.timestamp) * 1000).format("MMM DD"),
       };
     });
