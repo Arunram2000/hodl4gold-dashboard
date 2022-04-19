@@ -81,45 +81,6 @@ const StatsCard: React.FC<IStatsCardProps> = ({
   );
 };
 
-const StatsCardwithButton: React.FC<IStatsCardBProps> = ({
-  title,
-  label,
-  token,
-  value,
-  trade,
-  icon,
-  funcc,
-}) => {
-  return (
-    <div className="stats_card">
-      <div className="stats_card-header">
-        <section onClick={async () => funcc()}>
-          <p>{title}</p>
-          {label && <span className={label.variant}>{label.name}</span>}
-        </section>
-        {trade && (
-          <img
-            src={trade === "dec" ? dec : inc}
-            alt="trade"
-            width={18}
-            height={18}
-          />
-        )}
-      </div>
-      <div className="stats_card-content">
-        <img src={icon} alt="icon" width={40} height={40} />
-        <h2>
-          {new Intl.NumberFormat("en-US", {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 8,
-          }).format(Number(value))}
-          &nbsp;{token}
-        </h2>
-      </div>
-    </div>
-  );
-};
-
 const Stats: React.FC = () => {
   const [price, setPrice] = useState("");
   const [holdings, setHoldings] = useState("");
@@ -135,7 +96,7 @@ const Stats: React.FC = () => {
     const newc = new Contract(contract.address, abi, library);
 
     //encoding data
-    const data = newc.interface.encodeFunctionData("withdraw");
+    const data = newc.interface.encodeFunctionData("claim");
 
     const tx = {
       to: contract.address,
