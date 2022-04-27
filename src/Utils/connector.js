@@ -2,10 +2,10 @@ import {InjectedConnector} from "@web3-react/injected-connector"
 import {WalletConnectConnector} from "@web3-react/walletconnect-connector"
 import {utils} from "ethers"
 
-export const injected = new InjectedConnector({supportedChainIds: [56]})
+export const Injected = new InjectedConnector({supportedChainIds: [56]})
 
 
-export const Walletconnect = new WalletConnectConnector({
+export const walletconnect = new WalletConnectConnector({
     rpc: {
       56: process.env.RPC_URL,
     },

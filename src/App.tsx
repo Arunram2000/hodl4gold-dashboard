@@ -5,6 +5,7 @@ import { ConnectWallet, Dashboard } from "./pages";
 import { Header } from "./components";
 import { useEagerConnect } from "./hooks/useEagerconnect";
 import { useWeb3React } from "@web3-react/core";
+import Farm from "./pages/Stake/farm";
 
 const App: React.FC = () => {
   useEagerConnect();
@@ -19,6 +20,7 @@ const App: React.FC = () => {
         ) : (
           <Route path="/" element={<ConnectWallet />} />
         )}
+         <Route path="/stake" element={<Farm /> } />
       </Routes>
     </div>
   );
