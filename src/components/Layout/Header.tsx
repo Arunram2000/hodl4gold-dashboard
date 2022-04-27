@@ -5,15 +5,17 @@ import { AnimatePresence, motion } from "framer-motion";
 import "./Header.scss";
 import logo from "../../assets/images/logo_dark.png";
 import dashboard from "../../assets/icons/dashboard.svg";
-// import arrow from "../../assets/icons/arrow.svg";
-// import app from "../../assets/icons/app.svg";
+import arrow from "../../assets/icons/arrow.svg";
+import app from "../../assets/icons/app.svg";
 import Button from "../Button";
 import { useWeb3React } from "@web3-react/core";
 import Menu from "../Icons/Menu";
+import appLinks from "../../data/appLinks.json";
 
 const Header: React.FC = () => {
   const { account } = useWeb3React();
   const [sidebar, setSidebar] = useState(false);
+  const [dropdown, setDropdown] = useState(false);
 
   const renderHeaderControls = (
     <div className="header_controls">
@@ -84,12 +86,47 @@ const Header: React.FC = () => {
               <img src={dashboard} alt="icon" />
               <span>Dashboard</span>
             </Link>
-            {/* <div className="dropdown_link">
-              <p><img src={app} alt="icon" /><span>Apps <img src={arrow} alt="arrow icon" /></span></p>
-              <div className="dropdown_lists">
-                
+            <div
+              className="dropdown_link"
+              onMouseEnter={() => setDropdown(true)}
+              onMouseLeave={() => setDropdown(false)}
+            >
+              <div className="app_link">
+                <img src={app} alt="icon" />
+                <p>
+                  <span>Apps</span>
+                  <img src={arrow} alt="arrow icon" />
+                </p>
               </div>
-            </div> */}
+              <AnimatePresence exitBeforeEnter>
+                {dropdown && (
+                  <motion.div
+                    className="dropdown_lists"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                  >
+                    <ul>
+                      {appLinks.map((links, index) => {
+                        if (Array.isArray(links.link)) {
+                          return (
+                            <div className="nested_link" key={index.toString()}>
+                              nested links
+                            </div>
+                          );
+                        }
+
+                        return (
+                          <li key={index.toString()}>
+                            <Link to={links.link}>{links.label}</Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </section>
       </nav>

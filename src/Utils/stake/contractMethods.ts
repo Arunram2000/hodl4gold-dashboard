@@ -3,7 +3,7 @@ import h4gabi from "./abis/h4gtoken.json";
 import stakeabi from "./abis/h4gstake.json";
 import { H4G_STAKING_ADDRESS, H4G_TOKEN_ADDRESS } from "./address";
 import { getUserAllowance } from "./userMethods";
-import { IContractData } from "../store/types";
+import { IContractData } from "../../store/types";
 
 const AMOUNT = "10000000000000000000000";
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import { ConnectWallet, Dashboard } from "./pages";
@@ -16,11 +16,13 @@ const App: React.FC = () => {
       <Header />
       <Routes>
         {active ? (
-          <Route path="/" element={<Dashboard />} />
+          <Fragment>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/farms" element={<Farm />} />
+          </Fragment>
         ) : (
-          <Route path="/" element={<ConnectWallet />} />
+          <Route path="*" element={<ConnectWallet />} />
         )}
-         <Route path="/stake" element={<Farm /> } />
       </Routes>
     </div>
   );

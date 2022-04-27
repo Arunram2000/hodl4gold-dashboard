@@ -1,0 +1,39 @@
+[
+  {
+    "label": "Farms/Staking",
+    "link": "/farms"
+  },
+  {
+    "label": "Non Fungible Tokens",
+    "link": [
+      {
+        "label": "Marketplace",
+        "link": "/marketplace"
+      },
+      {
+        "label": "Minter",
+        "link": "/minter"
+      }
+    ]
+  },
+  {
+    "label": "Reward Calculator",
+    "link": "/reward_calculator"
+  },
+  {
+    "label": "Wallet",
+    "link": "/wallet"
+  },
+  {
+    "label": "Lottery",
+    "link": "/lottery"
+  },
+  {
+    "label": "Fiverr Marketplace",
+    "link": "/fiverr_marketplace"
+  },
+  {
+    "label": "Game early access",
+    "link": "/game_early_access"
+  }
+]
