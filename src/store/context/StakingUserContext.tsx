@@ -25,14 +25,14 @@ interface IUser {
   withdrawFee: number;
 }
 
-interface IUserContext {
+interface IStakingUserContext {
   isLoading: boolean;
   setUserData: React.Dispatch<React.SetStateAction<IUser>>;
   userData: IUser;
   refetch: () => Promise<void>;
 }
 
-export const UserContext = createContext<IUserContext>({
+export const StakingUserContext = createContext<IStakingUserContext>({
   userData: {
     tokenBalance: 0,
     userAllowance: 0,
@@ -48,7 +48,7 @@ export const UserContext = createContext<IUserContext>({
   refetch: async () => {},
 });
 
-const UserContextProvider: React.FC<{ children: ReactNode }> = ({
+const StakingUserContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -69,6 +69,7 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = ({
     if (account) {
       const { provider } = library;
       try {
+        setIsLoading(true);
         const userAllowance = await getUserAllowance(provider, account);
         const { totalStaked, busdReward } = await getUserDetails(
           provider,
@@ -79,7 +80,6 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = ({
           provider,
           account
         );
-        setIsLoading(true);
         setUserData({
           ...userData,
           tokenBalance: await getTokenBalance(provider, account),
@@ -99,19 +99,19 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = ({
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, library]);
+  }, [account]);
 
   useEffect(() => {
     handleGetUserData();
   }, [handleGetUserData]);
 
   return (
-    <UserContext.Provider
+    <StakingUserContext.Provider
       value={{ userData, setUserData, isLoading, refetch: handleGetUserData }}
     >
       {children}
-    </UserContext.Provider>
+    </StakingUserContext.Provider>
   );
 };
 
-export default UserContextProvider;
+export default StakingUserContextProvider;

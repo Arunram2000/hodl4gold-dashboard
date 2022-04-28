@@ -135,3 +135,9 @@ h5 {
   color: var(--text-primary);
   font-weight: 500;
 }
+
+[data-position="flex-between"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 
-import { Button} from "../../components";
+import { Button } from "../../components";
 import UnlockWallet from "../../components/UnlockWallet";
-import { UserContext } from "../../store/context/UserContex";
+import { StakingUserContext } from "../../store/context/StakingUserContext";
 
 import token from "../../assets/logo/token.png";
 import { TransactionContext } from "../../store/context/TransactionContext";
@@ -18,7 +18,7 @@ import {
 } from "../../Utils/stake/contractMethods";
 import { IContractData } from "../../store/types";
 import WithdrawModal from "../../components/Modals/WithdrawModal";
-import './Home.scss'
+import "./Home.scss";
 
 const Farm: React.FC = () => {
   const { account, library } = useWeb3React();
@@ -28,7 +28,8 @@ const Farm: React.FC = () => {
     apy: 0,
     endTime: undefined,
   });
-  const { userData, setUserData, refetch } = useContext(UserContext);
+  const { userData, setUserData, refetch, isLoading } =
+    useContext(StakingUserContext);
   const { setTransaction, loading } = useContext(TransactionContext);
 
   const handleGetApy = useCallback(async () => {
@@ -259,53 +260,57 @@ const Farm: React.FC = () => {
   );
 
   return (
-
     <>
-    <div className="home">
-      <div className="farm">
-        <div className="farm_header">
-          <div data-position="flex-between">
-            <h3>Earn H4G</h3>
-            <img src={token} alt="token" width={60} />
-          </div>
-        </div>
-        <div data-position="flex-between">
-          <p>APY:</p>
-          <b>
-            {new Intl.NumberFormat("en-US", {
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 2,
-            }).format(contractData.apy)}
-            %
-          </b>
-        </div>
-        <div>
-          <div data-position="flex-between">
-            <p className="primary">Deposit Fee</p>
-            <b>0%</b>
+      <div className="home">
+        <div className="farm">
+          <div className="farm_header">
+            <div data-position="flex-between">
+              <h3>Earn H4G</h3>
+              <img src={token} alt="token" width={60} />
+            </div>
           </div>
           <div data-position="flex-between">
-            <p className="primary">Withdraw Fee</p>
-            <b>0.5%</b>
+            <p>APY:</p>
+            <b>
+              {new Intl.NumberFormat("en-US", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2,
+              }).format(contractData.apy)}
+              %
+            </b>
           </div>
+          <div>
+            <div data-position="flex-between">
+              <p className="primary">Deposit Fee</p>
+              <b>0%</b>
+            </div>
+            <div data-position="flex-between">
+              <p className="primary">Withdraw Fee</p>
+              <b>0.5%</b>
+            </div>
+          </div>
+          {!account ? (
+            <UnlockWallet />
+          ) : isLoading ? (
+            <p style={{ textAlign: "center" }}>Loading...</p>
+          ) : !userData.isAllowanceApproved ? (
+            <Button
+              disabled={loading || isLoading}
+              onClick={() => handleApprove()}
+            >
+              Approve
+            </Button>
+          ) : (
+            renderMethods
+          )}
         </div>
-        {!account ? (
-          <UnlockWallet />
-        ) : !userData.isAllowanceApproved ? (
-          <Button disabled={loading} onClick={() => handleApprove()}>
-            Approve
-          </Button>
-        ) : (
-          renderMethods
-        )}
-      </div>
-      <WithdrawModal
-        modal={withdrawModal}
-        handleWithdraw={handleWithdraw}
-        handleClose={() => setWithdrawModal(false)}
-        withdrawAmount={userData.withdrawAmount}
-        withdrawFee={userData.withdrawFee}
-      />
+        <WithdrawModal
+          modal={withdrawModal}
+          handleWithdraw={handleWithdraw}
+          handleClose={() => setWithdrawModal(false)}
+          withdrawAmount={userData.withdrawAmount}
+          withdrawFee={userData.withdrawFee}
+        />
       </div>
     </>
   );

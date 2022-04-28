@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 import { RPC_URL } from "../../Utils/config.js";
 
 export const Injected = new InjectedConnector({
-  supportedChainIds: [56],
+  supportedChainIds: [56, 97],
 });
 
 export const walletConnect = new WalletConnectConnector({
