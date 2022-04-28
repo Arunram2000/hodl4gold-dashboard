@@ -4,19 +4,6 @@
     "link": "/farms"
   },
   {
-    "label": "Non Fungible Tokens",
-    "link": [
-      {
-        "label": "Marketplace",
-        "link": "/marketplace"
-      },
-      {
-        "label": "Minter",
-        "link": "/minter"
-      }
-    ]
-  },
-  {
     "label": "Reward Calculator",
     "link": "/reward_calculator"
   },
