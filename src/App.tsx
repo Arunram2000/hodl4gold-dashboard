@@ -1,11 +1,10 @@
 import React, { Fragment } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { ConnectWallet, Dashboard } from "./pages";
+import { ConnectWallet, Dashboard, Farms, Lottery } from "./pages";
 import { Header } from "./components";
 import { useEagerConnect } from "./hooks/useEagerconnect";
 import { useWeb3React } from "@web3-react/core";
-import Farm from "./pages/Stake/farm";
 
 const App: React.FC = () => {
   useEagerConnect();
@@ -18,7 +17,8 @@ const App: React.FC = () => {
         {active ? (
           <Fragment>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/farms" element={<Farm />} />
+            <Route path="/farms" element={<Farms />} />
+            <Route path="/lottery" element={<Lottery />} />
           </Fragment>
         ) : (
           <Route path="*" element={<ConnectWallet />} />
