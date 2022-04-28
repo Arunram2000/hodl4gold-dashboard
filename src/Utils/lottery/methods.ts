@@ -52,6 +52,7 @@ export const buyTicket = async (
   lotteryNumber: number
 ) => {
   try {
+    console.log('buy ticket')
     const etherProvider = new ethers.providers.Web3Provider(provider);
     const signer = etherProvider.getSigner(address);
     const lottoContract = new ethers.Contract(LOTTO_ADDRESS, lottoAbi, signer);
