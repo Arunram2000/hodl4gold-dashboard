@@ -26,7 +26,7 @@ export const getUserAllowance = async (address: string, provider: any) => {
 
   const userAllowance = await tokenContract.allowance(address, LOTTO_ADDRESS);
   const val = userAllowance.toString();
-  return Number(ethers.utils.formatEther(val));
+  return Number(ethers.utils.formatUnits(val, "gwei"));
 };
 
 export const IncreaseUserAllowance = async (address: string, provider: any) => {
@@ -35,7 +35,7 @@ export const IncreaseUserAllowance = async (address: string, provider: any) => {
   const tokenContract = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, signer);
 
   const allowanceValue = ethers.utils
-    .parseEther("100000000000000000")
+    .parseUnits("100000000000000000", "gwei")
     .toString();
 
   const tx = await tokenContract.increaseAllowance(
@@ -52,7 +52,6 @@ export const buyTicket = async (
   lotteryNumber: number
 ) => {
   try {
-    console.log('buy ticket')
     const etherProvider = new ethers.providers.Web3Provider(provider);
     const signer = etherProvider.getSigner(address);
     const lottoContract = new ethers.Contract(LOTTO_ADDRESS, lottoAbi, signer);
@@ -87,7 +86,9 @@ export const getEventUserList = async (
     return {
       user: userList.user.toString(),
       randomNumber: userList.randomno.toString(),
-      amount: ethers.utils.formatEther(userList.amount.toString()).toString(),
+      amount: ethers.utils
+        .formatUnits(userList.amount.toString(), "gwei")
+        .toString(),
     };
   });
 

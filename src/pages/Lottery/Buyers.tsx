@@ -45,7 +45,7 @@ const Buyers: React.FC = () => {
                 <FingerPrint />
                 <div>
                   <p>
-                    [{i}] - {getSlicedValue(val.user)}
+                    [{i + 1}] - {getSlicedValue(val.user)}
                   </p>
                   <span> Wallet address</span>
                 </div>

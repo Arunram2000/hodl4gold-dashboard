@@ -63,26 +63,37 @@ const StakingUserContextProvider: React.FC<{ children: ReactNode }> = ({
     withdrawFee: 0,
   });
 
-  const { account, library } = useWeb3React();
+  const { account, library, chainId } = useWeb3React();
 
   const handleGetUserData = useCallback(async () => {
     if (account) {
       const { provider } = library;
       try {
         setIsLoading(true);
-        const userAllowance = await getUserAllowance(provider, account);
+        const userAllowance = await getUserAllowance(
+          provider,
+          account,
+          chainId
+        );
         const { totalStaked, busdReward } = await getUserDetails(
           provider,
-          account
+          account,
+          chainId
         );
-        const rewards = await getRewardAmount(provider, account, totalStaked);
+        const rewards = await getRewardAmount(
+          provider,
+          account,
+          chainId,
+          totalStaked
+        );
         const { withdrawAmount, withdrawFee } = await getUserWithdrawAmount(
           provider,
-          account
+          account,
+          chainId
         );
         setUserData({
           ...userData,
-          tokenBalance: await getTokenBalance(provider, account),
+          tokenBalance: await getTokenBalance(provider, account, chainId),
           userAllowance,
           isAllowanceApproved: userAllowance < 100 ? false : true,
           rewards,
@@ -99,7 +110,7 @@ const StakingUserContextProvider: React.FC<{ children: ReactNode }> = ({
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account]);
+  }, [account, chainId]);
 
   useEffect(() => {
     handleGetUserData();

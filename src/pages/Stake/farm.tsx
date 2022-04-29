@@ -21,7 +21,7 @@ import WithdrawModal from "../../components/Modals/WithdrawModal";
 import "./Home.scss";
 
 const Farm: React.FC = () => {
-  const { account, library } = useWeb3React();
+  const { account, library, chainId } = useWeb3React();
   const [withdrawModal, setWithdrawModal] = useState(false);
   const [deposit, setDeposit] = useState("");
   const [contractData, setContractData] = useState<IContractData>({
@@ -35,12 +35,14 @@ const Farm: React.FC = () => {
   const handleGetApy = useCallback(async () => {
     if (account) {
       try {
-        setContractData(await getContractDetails(library?.provider, account));
+        setContractData(
+          await getContractDetails(library?.provider, account, chainId)
+        );
       } catch (error) {
         console.log(error);
       }
     }
-  }, [account, library]);
+  }, [account, library, chainId]);
 
   useEffect(() => {
     handleGetApy();
@@ -49,7 +51,11 @@ const Farm: React.FC = () => {
   const handleApprove = async () => {
     if (!account) return;
     setTransaction({ loading: true, status: "pending" });
-    const { data, error } = await setApprove(library?.provider, account);
+    const { data, error } = await setApprove(
+      library?.provider,
+      account,
+      chainId
+    );
 
     if (error) {
       setTransaction({
@@ -80,7 +86,7 @@ const Farm: React.FC = () => {
         return;
       }
       setTransaction({ loading: true, status: "pending" });
-      await setStake(library?.provider, account, deposit);
+      await setStake(library?.provider, account, chainId, deposit);
       setDeposit("");
       await refetch();
       setTransaction({ loading: true, status: "success" });
@@ -98,7 +104,12 @@ const Farm: React.FC = () => {
     if (!account) return;
     try {
       setTransaction({ loading: true, status: "pending" });
-      await setCompound(library?.provider, account, userData.totalStaked);
+      await setCompound(
+        library?.provider,
+        account,
+        chainId,
+        userData.totalStaked
+      );
       await refetch();
       setTransaction({ loading: true, status: "success" });
     } catch (error: any) {
@@ -115,7 +126,12 @@ const Farm: React.FC = () => {
     if (!account) return;
     try {
       setTransaction({ loading: true, status: "pending" });
-      await setHarvest(library?.provider, account, userData.totalStaked);
+      await setHarvest(
+        library?.provider,
+        account,
+        chainId,
+        userData.totalStaked
+      );
       await refetch();
       setTransaction({ loading: true, status: "success" });
     } catch (error: any) {
@@ -132,7 +148,7 @@ const Farm: React.FC = () => {
     if (!account) return;
     try {
       setTransaction({ loading: true, status: "pending" });
-      await claimBUSD(library?.provider, account);
+      await claimBUSD(library?.provider, account, chainId);
       await refetch();
       setTransaction({ loading: true, status: "success" });
     } catch (error: any) {
@@ -149,7 +165,7 @@ const Farm: React.FC = () => {
     if (!account) return;
     try {
       setTransaction({ loading: true, status: "pending" });
-      await withdraw(library?.provider, account);
+      await withdraw(library?.provider, account, chainId);
       await refetch();
       setTransaction({ loading: true, status: "success" });
     } catch (error: any) {

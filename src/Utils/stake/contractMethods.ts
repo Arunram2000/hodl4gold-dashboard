@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import h4gabi from "./abis/h4gtoken.json";
 import stakeabi from "./abis/h4gstake.json";
-import { H4G_STAKING_ADDRESS, H4G_TOKEN_ADDRESS } from "./address";
+import { STAKING_ADDRESS, TOKEN_ADDRESS } from "./address";
 import { getUserAllowance } from "./userMethods";
 import { IContractData } from "../../store/types";
 
@@ -16,10 +16,18 @@ export const countDecimals = (value: number) => {
   return Math.pow(10, decimals);
 };
 
-export const getTotalStaked = async (provider, address: string) => {
+export const getTotalStaked = async (
+  provider,
+  address: string,
+  chainId: number
+) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
-  const h4gstake = new ethers.Contract(H4G_STAKING_ADDRESS, stakeabi, signer);
+  const h4gstake = new ethers.Contract(
+    STAKING_ADDRESS[chainId],
+    stakeabi,
+    signer
+  );
 
   const totalStaked = await h4gstake.totalStaked();
   const formatEther = ethers.utils.formatUnits(totalStaked.toString(), "gwei");
@@ -30,19 +38,20 @@ export const getTotalStaked = async (provider, address: string) => {
 export const setApprove = async (
   provider,
   address: string,
+  chainId: number,
   amount = AMOUNT
 ) => {
   try {
     const etherProvider = new ethers.providers.Web3Provider(provider);
     const signer = etherProvider.getSigner(address);
-    const h4g = new ethers.Contract(H4G_TOKEN_ADDRESS, h4gabi, signer);
+    const h4g = new ethers.Contract(TOKEN_ADDRESS[chainId], h4gabi, signer);
 
-    const tx = await h4g.increaseAllowance(H4G_STAKING_ADDRESS, amount);
+    const tx = await h4g.increaseAllowance(STAKING_ADDRESS[chainId], amount);
     await tx.wait();
     await sleep();
 
     return {
-      data: await getUserAllowance(provider, address),
+      data: await getUserAllowance(provider, address, chainId),
     };
   } catch (err: any) {
     return {
@@ -54,10 +63,19 @@ export const setApprove = async (
   }
 };
 
-export const setStake = async (provider, address, amount: string) => {
+export const setStake = async (
+  provider,
+  address,
+  chainId: number,
+  amount: string
+) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
-  const h4gstake = new ethers.Contract(H4G_STAKING_ADDRESS, stakeabi, signer);
+  const h4gstake = new ethers.Contract(
+    STAKING_ADDRESS[chainId],
+    stakeabi,
+    signer
+  );
 
   const parseEther = ethers.utils.parseUnits(amount, "gwei").toString();
   const tx = await h4gstake.stake(parseEther);
@@ -67,11 +85,16 @@ export const setStake = async (provider, address, amount: string) => {
 export const setCompound = async (
   provider,
   address: string,
+  chainId: number,
   userStaked: number
 ) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
-  const h4gstake = new ethers.Contract(H4G_STAKING_ADDRESS, stakeabi, signer);
+  const h4gstake = new ethers.Contract(
+    STAKING_ADDRESS[chainId],
+    stakeabi,
+    signer
+  );
 
   const tx = await h4gstake.compound(address);
   await tx.wait();
@@ -80,11 +103,16 @@ export const setCompound = async (
 export const setHarvest = async (
   provider,
   address: string,
+  chainId: number,
   userStaked: number
 ) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
-  const h4gstake = new ethers.Contract(H4G_STAKING_ADDRESS, stakeabi, signer);
+  const h4gstake = new ethers.Contract(
+    STAKING_ADDRESS[chainId],
+    stakeabi,
+    signer
+  );
 
   const tx = await h4gstake.harvest(address);
   await tx.wait();
@@ -92,11 +120,17 @@ export const setHarvest = async (
 
 export const getContractDetails = async (
   provider,
-  address: string
+  address: string,
+  chainId: number
 ): Promise<IContractData> => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
-  const h4gstake = new ethers.Contract(H4G_STAKING_ADDRESS, stakeabi, signer);
+  const h4gstake = new ethers.Contract(
+    STAKING_ADDRESS[chainId],
+    stakeabi,
+    signer
+  );
+
   const apy = await h4gstake.getApy();
   const endtime = await h4gstake.endTime();
 
@@ -116,19 +150,27 @@ export const getContractDetails = async (
   };
 };
 
-export const withdraw = async (provider, address: string) => {
+export const withdraw = async (provider, address: string, chainId: number) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
-  const h4gstake = new ethers.Contract(H4G_STAKING_ADDRESS, stakeabi, signer);
+  const h4gstake = new ethers.Contract(
+    STAKING_ADDRESS[chainId],
+    stakeabi,
+    signer
+  );
 
   const tx = await h4gstake.withdraw(address, 1000);
   await tx.wait();
 };
 
-export const claimBUSD = async (provider, address) => {
+export const claimBUSD = async (provider, address: string, chainId: number) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
-  const h4gstake = new ethers.Contract(H4G_STAKING_ADDRESS, stakeabi, signer);
+  const h4gstake = new ethers.Contract(
+    STAKING_ADDRESS[chainId],
+    stakeabi,
+    signer
+  );
 
   const tx = h4gstake.claimBusd(address);
   return tx.wait();

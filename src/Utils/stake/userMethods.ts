@@ -2,21 +2,33 @@ import { ethers } from "ethers";
 import h4gabi from "./abis/h4gtoken.json";
 import stakeabi from "./abis/h4gstake.json";
 
-import { H4G_STAKING_ADDRESS, H4G_TOKEN_ADDRESS } from "./address";
+import { STAKING_ADDRESS, TOKEN_ADDRESS } from "./address";
 
-export const getStakingContract = (provider, address: string) => {
+export const getStakingContract = (
+  provider,
+  address: string,
+  chainId: number
+) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
-  const h4gstake = new ethers.Contract(H4G_STAKING_ADDRESS, stakeabi, signer);
+  const h4gstake = new ethers.Contract(
+    STAKING_ADDRESS[chainId],
+    stakeabi,
+    signer
+  );
 
   return h4gstake;
 };
 
-export const getTokenBalance = async (provider, address: any) => {
+export const getTokenBalance = async (
+  provider,
+  address: any,
+  chainId: number
+) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
   const h4gTokenContract = new ethers.Contract(
-    H4G_TOKEN_ADDRESS,
+    TOKEN_ADDRESS[chainId],
     h4gabi,
     signer
   );
@@ -28,26 +40,34 @@ export const getTokenBalance = async (provider, address: any) => {
   return Number(formatEther);
 };
 
-export const getUserAllowance = async (provider, address: string) => {
+export const getUserAllowance = async (
+  provider,
+  address: string,
+  chainId: number
+) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
   const h4gTokenContract = new ethers.Contract(
-    H4G_TOKEN_ADDRESS,
+    TOKEN_ADDRESS[chainId],
     h4gabi,
     signer
   );
 
   const userAllowanceInHex = await h4gTokenContract.allowance(
     address,
-    H4G_STAKING_ADDRESS
+    STAKING_ADDRESS[chainId]
   );
   const userAllowance = userAllowanceInHex.toString();
   const formatEther = ethers.utils.formatUnits(userAllowance, "gwei");
   return Number(formatEther);
 };
 
-export const getUserDetails = async (provider, address: string) => {
-  const h4gstake = getStakingContract(provider, address);
+export const getUserDetails = async (
+  provider,
+  address: string,
+  chainId: number
+) => {
+  const h4gstake = getStakingContract(provider, address, chainId);
 
   const userDetails = await h4gstake.getUserDetails(address);
   const formatTotalStaked = ethers.utils.formatUnits(
@@ -65,10 +85,11 @@ export const getUserDetails = async (provider, address: string) => {
 export const getRewardAmount = async (
   provider,
   address: string,
+  chainId: number,
   userStaked: number
 ) => {
   try {
-    const h4gstake = getStakingContract(provider, address);
+    const h4gstake = getStakingContract(provider, address, chainId);
 
     const rewards = await h4gstake.rewardPerBlockAddress(address);
     const formatEther = ethers.utils.formatUnits(rewards.toString(), "gwei");
@@ -79,11 +100,19 @@ export const getRewardAmount = async (
   }
 };
 
-export const getUserWithdrawAmount = async (provider, address: string) => {
+export const getUserWithdrawAmount = async (
+  provider,
+  address: string,
+  chainId: number
+) => {
   try {
     const etherProvider = new ethers.providers.Web3Provider(provider);
     const signer = etherProvider.getSigner(address);
-    const h4gstake = new ethers.Contract(H4G_STAKING_ADDRESS, stakeabi, signer);
+    const h4gstake = new ethers.Contract(
+      STAKING_ADDRESS[chainId],
+      stakeabi,
+      signer
+    );
 
     const amount = await h4gstake.withdrawAmount(address, 1000);
     const val = amount.toString().split(",");
