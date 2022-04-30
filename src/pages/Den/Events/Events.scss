@@ -1,0 +1,192 @@
+@import "../../../index.scss";
+
+.events_wrapper {
+  max-width: 560px;
+  width: 100%;
+  margin: 0 auto;
+
+  @media (max-width: 768px) {
+    max-width: 90%;
+  }
+
+  .event_container {
+    padding: 1.25em;
+    background-color: #fff;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      background-color: transparent;
+      width: 5px;
+
+      @media (max-width: 768px) {
+        all: initial;
+      }
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #e5e5e5;
+      border-radius: 10px;
+
+      @media (max-width: 768px) {
+        all: initial;
+      }
+    }
+
+    &-image {
+      height: 220px;
+      width: 100%;
+      background-color: rgba(229, 229, 229, 0.2);
+      border-radius: 5px;
+      margin-bottom: 1.5em;
+      display: grid;
+      place-items: center;
+
+      img {
+        width: 95%;
+        height: inherit;
+        object-fit: contain;
+      }
+    }
+
+    &-content {
+      &_header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        grid-gap: 1em;
+      }
+
+      .no_participants {
+        display: grid;
+        place-items: center;
+        text-align: center;
+        height: 100px;
+      }
+
+      .participants_list {
+        display: flex;
+        flex-direction: column;
+        grid-gap: 10px;
+
+        > div {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          &.participants_list-card {
+            border-radius: 8px;
+            border: 1px solid gold;
+            padding: 0.75em;
+          }
+
+          b {
+            color: gold;
+          }
+        }
+      }
+
+      .event_tasks_container {
+        .event_tasks_wrapper {
+          display: flex;
+          flex-direction: column;
+          grid-gap: 0.5em;
+
+          .task_card {
+            background: #ffffff;
+            border: 1px solid gold;
+            box-sizing: border-box;
+            box-shadow: 0px 1px 15px rgba(81, 224, 255, 0.05);
+            border-radius: 8px;
+            width: 100%;
+
+            &-content {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              grid-gap: 2em;
+              cursor: pointer;
+              padding: 1.25em 1.5em;
+
+              &_left {
+                display: flex;
+                align-items: center;
+
+                > img {
+                  width: 50px;
+                  height: 50px;
+                }
+
+                > div {
+                  display: flex;
+                  flex-direction: column;
+                  margin-left: 15px;
+                }
+              }
+
+              &_right {
+                b {
+                  font-weight: bold;
+                  font-size: 24px;
+                  line-height: 32px;
+                  color: gold;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .task_form_container {
+        display: flex;
+        flex-direction: column;
+        grid-gap: 1em;
+
+        a {
+          color: gold;
+          font-size: 1em;
+          font-weight: 700;
+        }
+
+        .block_right {
+          display: flex;
+          flex-direction: column;
+          grid-gap: 1em;
+        }
+
+        .form_input {
+          display: flex;
+          flex-direction: column;
+
+          input {
+            outline: none;
+            background: #ffffff;
+            border: 1px solid rgba(252, 188, 103, 0.5);
+            box-sizing: border-box;
+            font-size: 14px;
+            line-height: 22px;
+            padding: 8px 1em;
+
+            &::placeholder {
+              color: #bdb6d8;
+            }
+          }
+
+          .error_input {
+            font-size: 12px;
+            line-height: 18px;
+            color: tomato;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 250ms linear;
+
+            &.active {
+              opacity: 1;
+              visibility: visible;
+            }
+          }
+        }
+      }
+    }
+  }
+}

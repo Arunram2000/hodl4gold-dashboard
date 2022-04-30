@@ -3,7 +3,7 @@
 :root {
   --background: #e5e5e5;
   --btn-primary: #006039;
-  --btn-secondary: #4f307c;
+  --btn-secondary: rgb(79, 48, 124);
   --btn-error: #ff6347;
   --header-height: 70px;
   --link: #6d7080;
@@ -140,4 +140,39 @@ h5 {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.loader {
+  min-height: 200px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.slick-prev,
+.slick-next {
+  font-size: 50px;
+
+  &::before {
+    font-size: 50px;
+    color: gold;
+
+    @media (max-width: 768px) {
+      font-size: 30px;
+    }
+  }
+}
+
+.slick-next {
+  @media (max-width: 768px) {
+    right: -10px;
+  }
+}
+
+.slick-prev {
+  left: -50px;
+
+  @media (max-width: 768px) {
+    left: -25px;
+  }
 }
