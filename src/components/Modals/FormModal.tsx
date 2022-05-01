@@ -85,15 +85,8 @@ const FormModal: React.FC<IFormMdal> = ({ refetch, modal }) => {
           >
             <h3>Getting to know you better</h3>
             <p className="mb-20 mt-10">
-              If you don't have an twitter account then create one and come
-              here.
-              <a
-                href="http://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                click here to create
-              </a>
+              This is a irreversible process. So kindly give the information
+              correctly.
             </p>
             {error && (
               <p style={{ fontSize: 12, color: "tomato", textAlign: "center" }}>

@@ -8,8 +8,15 @@ import React, {
 } from "react";
 import { getUserApi } from "../../api/denApi";
 import FormModal from "../../components/Modals/FormModal";
+import { IDenUser } from "../types";
 
-export const DenUserContext = createContext({
+interface IDenUserContext {
+  userData: IDenUser | null;
+  isLoading: boolean;
+  fetchUserData: () => Promise<void>;
+}
+
+export const DenUserContext = createContext<IDenUserContext>({
   isLoading: false,
   userData: null,
   fetchUserData: async () => {},
@@ -18,7 +25,7 @@ export const DenUserContext = createContext({
 const DenUserContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<IDenUser | null>(null);
   const [isLoading, setLoading] = useState(false);
   const { account } = useWeb3React();
 
@@ -49,10 +56,12 @@ const DenUserContextProvider: React.FC<{ children: ReactNode }> = ({
       }}
     >
       {children}
-      <FormModal
-        modal={!userData?.username ? true : false}
-        refetch={handleGetUserData}
-      />
+      {!isLoading && (
+        <FormModal
+          modal={!userData?.username ? true : false}
+          refetch={handleGetUserData}
+        />
+      )}
     </DenUserContext.Provider>
   );
 };

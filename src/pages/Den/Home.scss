@@ -19,6 +19,35 @@
   //   z-index: -1;
   // }
 
+  .user_header {
+    max-width: 560px;
+    width: 100%;
+    margin: 0 auto 1.5em;
+    background-color: #fff;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1rem;
+
+    @media (max-width: 576px) {
+      max-width: 90%;
+    }
+
+    &-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+
+      > div {
+        display: grid;
+        place-items: center;
+      }
+    }
+  }
+
   .tabs-header {
     display: flex;
     align-items: center;

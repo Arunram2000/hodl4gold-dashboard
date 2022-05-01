@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Home.scss";
 
 import Prizes from "./Prizes/Prizes";
 import Events from "./Events/Events";
 import Leaderboard from "./Leaderboard/Leaderboard";
-import DenUserContextProvider from "../../store/context/DenUserContext";
+import DenUserContextProvider, {
+  DenUserContext,
+} from "../../store/context/DenUserContext";
+
+import { ReactComponent as UserIcon } from "../../assets/icons/user.svg";
+import DenAccount from "../../components/Modals/DenAccountModal";
 
 const tabs = [
   {
@@ -21,12 +26,37 @@ const tabs = [
   },
 ];
 
+const User = () => {
+  const { userData, isLoading } = useContext(DenUserContext);
+  const [modal, setModal] = useState(false);
+
+  if (isLoading || !userData?.username) return null;
+
+  return (
+    <>
+      <div className="user_header">
+        <div className="user_header-left" onClick={() => setModal(true)}>
+          <div title="click here to see profile">
+            <UserIcon />
+          </div>
+          <h5>@{userData?.username}</h5>
+        </div>
+        <p>
+          <b>{userData?.rewards}</b> HODL
+        </p>
+      </div>
+      <DenAccount modal={modal} handleClose={() => setModal(false)} />
+    </>
+  );
+};
+
 const Den: React.FC = () => {
   const [activeTab, setActiveTab] = useState(1);
 
   return (
     <DenUserContextProvider>
       <div className="den">
+        <User />
         <div className="tabs-header">
           {tabs.map((tab, index) => (
             <div

@@ -5,7 +5,7 @@ import { getRecentWinners, IEventUserList } from "../../Utils/lottery/methods";
 import { getSlicedValue } from "../../Utils/lottery/helpers";
 
 const Leaderboard: React.FC = () => {
-  const { account, library } = useWeb3React();
+  const { account, library, chainId } = useWeb3React();
 
   const [currentEventInfo, setCurrentEventInfo] = useState<IEventUserList[]>(
     []
@@ -14,14 +14,16 @@ const Leaderboard: React.FC = () => {
   const handleGetEventData = useCallback(async () => {
     if (account) {
       try {
-        setCurrentEventInfo(await getRecentWinners(account, library?.provider));
+        setCurrentEventInfo(
+          await getRecentWinners(account, library?.provider, chainId)
+        );
       } catch (error) {
         console.log(error);
       }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account]);
+  }, [account, chainId]);
 
   useEffect(() => {
     handleGetEventData();

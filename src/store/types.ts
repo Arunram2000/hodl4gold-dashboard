@@ -39,3 +39,16 @@ export interface IDenEvents {
   _id: string;
   createdAt: string;
 }
+
+export interface IDenUser {
+  __v: number;
+  _id: string;
+  account: string;
+  createdAt: string;
+  description: string;
+  discord_username: string;
+  image: string;
+  rewards: number;
+  updatedAt: string;
+  username: string;
+}

@@ -266,3 +266,24 @@
     }
   }
 }
+
+.accounts {
+  section {
+    .copy_clipboard {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      grid-gap: 1em;
+
+      span {
+        cursor: pointer;
+        height: 24px;
+      }
+
+      svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+}

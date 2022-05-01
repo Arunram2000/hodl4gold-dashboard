@@ -29,7 +29,7 @@ export const LotteryUserContext = createContext<ILotteryUserContext>({
 const LotteryUserContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const { account, library } = useWeb3React();
+  const { account, library, chainId } = useWeb3React();
   const [userData, setUserData] = useState<IUser>({
     tokenBalance: 0,
     allowance: 0,
@@ -41,11 +41,13 @@ const LotteryUserContextProvider: React.FC<{ children: ReactNode }> = ({
       try {
         const userAllowance = await getUserAllowance(
           account,
-          library?.provider
+          library?.provider,
+          chainId
         );
         const tokenBalance = await getUserTokenBalance(
           account,
-          library?.provider
+          library?.provider,
+          chainId
         );
         setUserData({
           allowance: userAllowance,

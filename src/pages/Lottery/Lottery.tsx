@@ -4,6 +4,7 @@ import Countdown, { CountdownRenderProps } from "react-countdown";
 import {
   buyTicket,
   getCurrentEventInfo,
+  getTicketFee,
   ICurrentEvent,
   IncreaseUserAllowance,
 } from "../../Utils/lottery/methods";
@@ -18,7 +19,7 @@ import { LotteryUserContext } from "../../store/context/LotteryUserContext";
 
 const Lottery: React.FC = () => {
   const [modal, setModal] = useState(false);
-  const { account, library } = useWeb3React();
+  const { account, library, chainId } = useWeb3React();
   const { setTransaction } = useContext(TransactionContext);
 
   const [currentEventInfo, setCurrentEventInfo] =
@@ -26,19 +27,30 @@ const Lottery: React.FC = () => {
   const { isAllowanceApproved, tokenBalance, refetch } =
     useContext(LotteryUserContext);
   const [tab, setTab] = useState(1);
+  const [ticketFee, setTicketFee] = useState(0);
 
   const handleGetEventData = useCallback(async () => {
     if (account) {
       try {
-        const eventInfo = await getCurrentEventInfo(account, library?.provider);
+        const eventInfo = await getCurrentEventInfo(
+          account,
+          library?.provider,
+          chainId
+        );
+        const ticketfee = await getTicketFee(
+          account,
+          library?.provider,
+          chainId
+        );
         if (eventInfo) setCurrentEventInfo(eventInfo.data);
+        setTicketFee(ticketfee);
       } catch (error) {
         console.log(error);
       }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account]);
+  }, [account, chainId]);
 
   useEffect(() => {
     handleGetEventData();
@@ -56,6 +68,7 @@ const Lottery: React.FC = () => {
     const { data, error } = await buyTicket(
       account,
       library?.provider,
+      chainId,
       lotteryNumber
     );
 
@@ -73,7 +86,7 @@ const Lottery: React.FC = () => {
     if (!account) return;
     try {
       setTransaction({ loading: true, status: "pending" });
-      await IncreaseUserAllowance(account, library?.provider);
+      await IncreaseUserAllowance(account, library?.provider, chainId);
       await refetch();
 
       setTransaction({ loading: true, status: "success" });
@@ -138,11 +151,33 @@ const Lottery: React.FC = () => {
     <>
       <div className={"lottery_wrapper"}>
         <div className={"header"}>
-          <img src={token} alt="token" width={40} />
-          <Title />
+          <div className="header-logo">
+            <img src={token} alt="token" width={40} />
+            <Title />
+          </div>
+          <p>
+            Balance :{" "}
+            <strong>
+              {new Intl.NumberFormat("en-US", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 6,
+              }).format(tokenBalance)}{" "}
+              BUSD
+            </strong>
+          </p>
         </div>
         <div className={"content"}>
-          <h3>Hodl4Gold Lottery Live Stream</h3>
+          <div>
+            <h3>Hodl4Gold Lottery Live Stream</h3>
+            <h4>
+              Ticket price&nbsp;
+              {new Intl.NumberFormat("en-US", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2,
+              }).format(ticketFee)}{" "}
+              BUSD
+            </h4>
+          </div>
           {currentEventInfo && (
             <Countdown
               date={currentEventInfo.endTime}
