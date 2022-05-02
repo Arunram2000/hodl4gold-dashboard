@@ -2,9 +2,9 @@ import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 
 import {
   Close,
-  Illustration1,
-  Illustration2,
-  Refresh,
+  // Illustration1,
+  // Illustration2,
+  // Refresh,
 } from "../../components/Icons";
 import Button from "../Button";
 import { generateRandomNumber } from "../../Utils/lottery/helpers";
@@ -51,17 +51,17 @@ const LotteryModal: React.FC<LotteryModal> = ({
   setTab,
 }) => {
   const [lotteryNumber, setLotteryNumber] = useState("");
+  const [lotteryList, setLotteryList] = useState<string[]>([]);
   const [randomNumber, setRandomNumber] = useState("");
   const [error, setError] = useState<string>();
 
   useEffect(() => {
-    setTab(1);
+    setLotteryList([String(generateRandomNumber(numbersList))]);
 
-    return () => {
-      console.log("ended");
-    };
-  }, [setTab]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  console.log(lotteryList);
   useMemo(() => {
     if (lotteryNumber.length > 6) return setError("maximun 6 digit is allowed");
     if (lotteryNumber.length > 0) {
@@ -78,13 +78,6 @@ const LotteryModal: React.FC<LotteryModal> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lotteryNumber]);
 
-  useMemo(() => {
-    setLotteryNumber("");
-    setRandomNumber(generateRandomNumber(numbersList));
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tab]);
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (value.length <= 6) setLotteryNumber(value);
@@ -94,67 +87,24 @@ const LotteryModal: React.FC<LotteryModal> = ({
     setRandomNumber(generateRandomNumber(numbersList));
   };
 
-  const renderTab1 = (
-    <div className={"lottery_type"}>
-      <div onClick={() => setTab(2)}>
-        <Illustration1 />
-        <p>Generate Random Number</p>
-      </div>
-      <div onClick={() => setTab(3)}>
-        <Illustration2 />
-        <p>Create Random Numer</p>
-      </div>
-    </div>
-  );
-
-  const renderTab2 = (
-    <div className={"lottery_section"}>
-      <div className={"illustration"}>
-        <Illustration1 />
-      </div>
-      <div className={"lottery_input"}>
-        <p>{randomNumber ? randomNumber : "000000"}</p>
-        <div onClick={() => getRandomNumber()}>
-          <Refresh />
+  const renderTab = (
+    <div className={"lottery_content"}>
+      {lotteryList.map((list, index) => (
+        <div key={index.toString()}>
+          <input
+            type="number"
+            name={`lottery${index}`}
+            value={list}
+            onChange={({ target }) => {}}
+          />
         </div>
-      </div>
-      <Button
-        disabled={!randomNumber}
-        onClick={() => handleBuyTicket(Number(randomNumber))}
-      >
-        Buy Ticket
-      </Button>
-    </div>
-  );
-
-  const renderTab3 = (
-    <div className={"lottery_section"}>
-      <div className={"illustration"}>
-        <Illustration2 />
-      </div>
-      <div className={"lottery_input"}>
-        <input
-          type="number"
-          placeholder="123456"
-          autoFocus
-          maxLength={6}
-          value={lotteryNumber}
-          onChange={handleChange}
-        />
-      </div>
-      {error && <p className={error}>{error}</p>}
-      <Button
-        disabled={!lotteryNumber || !!error}
-        onClick={() => handleBuyTicket(Number(lotteryNumber))}
-      >
-        Buy Ticket
-      </Button>
+      ))}
     </div>
   );
 
   return (
     <AnimatePresence exitBeforeEnter>
-      <Backdrop isOpen={modal} handleClose={tab === 1 && handleClose}>
+      <Backdrop isOpen={modal} handleClose={handleClose}>
         <motion.div
           onClick={(e) => e.stopPropagation()}
           variants={modalVaraints}
@@ -163,23 +113,30 @@ const LotteryModal: React.FC<LotteryModal> = ({
           exit="exit"
           className={"lotteryModal"}
         >
-          <div
-            onClick={() => {
-              if (tab === 1) return handleClose && handleClose();
-              if (tab === 2) return setTab(1);
-              if (tab === 3) return setTab(1);
-            }}
-            className={"lottery_header"}
-          >
-            <Close />
+          <div className={"lottery_header"}>
+            <div
+              className={
+                lotteryList.length >= 10 ? "add_more inactive" : "add_more"
+              }
+              onClick={() =>
+                setLotteryList([
+                  ...lotteryList,
+                  String(
+                    generateRandomNumber([...numbersList, ...lotteryList])
+                  ),
+                ])
+              }
+            >
+              <p>Add more</p>
+              <Close />
+            </div>
           </div>
-          {
-            {
-              1: renderTab1,
-              2: renderTab2,
-              3: renderTab3,
-            }[tab]
-          }
+          {renderTab}
+          <div>
+            <Button onClick={() => handleBuyTicket(5)}>
+              Purchase a Ticket
+            </Button>
+          </div>
         </motion.div>
       </Backdrop>
     </AnimatePresence>

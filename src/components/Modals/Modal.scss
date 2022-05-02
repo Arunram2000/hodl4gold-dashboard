@@ -88,10 +88,35 @@
   @extend %base-styles;
   max-width: 560px;
   padding: 2em;
+  position: relative;
 
   .lottery_header {
-    svg {
-      cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+
+    .add_more {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      opacity: 1;
+      transition: opacity 250ms linear;
+
+      &.inactive {
+        pointer-events: none;
+        opacity: 0.8;
+
+        p {
+          color: var(--text-secondary);
+        }
+      }
+
+      p {
+        color: #000000;
+      }
+
+      svg {
+        transform: rotate(45deg);
+      }
     }
   }
 

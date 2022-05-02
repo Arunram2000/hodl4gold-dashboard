@@ -3,19 +3,6 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_amount",
-				"type": "uint256"
-			}
-		],
-		"name": "busdfundTransfer",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
 				"name": "amount",
 				"type": "uint256"
 			}
@@ -52,13 +39,7 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			}
-		],
+		"inputs": [],
 		"name": "compound",
 		"outputs": [],
 		"stateMutability": "nonpayable",
@@ -78,13 +59,7 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			}
-		],
+		"inputs": [],
 		"name": "harvest",
 		"outputs": [],
 		"stateMutability": "nonpayable",
@@ -107,7 +82,30 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
+				"name": "_depositfee",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_depositfeedecimal",
+				"type": "uint256"
+			}
+		],
+		"name": "setDepositFee",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
 				"name": "_withdrawfee",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_withdrawfeedecimal",
 				"type": "uint256"
 			}
 		],
@@ -132,6 +130,42 @@
 	{
 		"inputs": [
 			{
+				"internalType": "address",
+				"name": "_address",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "stuckbusd",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_address",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "stuckh4g",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "contract IERC20",
 				"name": "_h4g",
 				"type": "address"
@@ -146,18 +180,7 @@
 		"type": "constructor"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_number",
-				"type": "uint256"
-			}
-		],
+		"inputs": [],
 		"name": "withdraw",
 		"outputs": [],
 		"stateMutability": "nonpayable",
@@ -247,6 +270,19 @@
 	},
 	{
 		"inputs": [],
+		"name": "depositfeedecimal",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "endBlock",
 		"outputs": [
 			{
@@ -300,6 +336,24 @@
 	{
 		"inputs": [],
 		"name": "getApy",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getDepositDetails",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -385,6 +439,24 @@
 				"internalType": "struct Staking.UserDetails",
 				"name": "",
 				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getWithdrawDetails",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -514,11 +586,6 @@
 				"internalType": "address",
 				"name": "_address",
 				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_number",
-				"type": "uint256"
 			}
 		],
 		"name": "withdrawAmount",
@@ -540,6 +607,19 @@
 	{
 		"inputs": [],
 		"name": "withdrawfee",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdrawfeedecimal",
 		"outputs": [
 			{
 				"internalType": "uint256",

@@ -1,6 +1,8 @@
 export type IContractData = {
   apy: number;
   endTime: string | number | undefined;
+  withdrawFee: number;
+  depositFee: number;
 };
 
 export interface IPrize {
