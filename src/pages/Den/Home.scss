@@ -1,0 +1,87 @@
+@import "../../index.scss";
+
+.den {
+  margin-top: 25px;
+  // min-height: calc(100vh - 105px);
+  position: relative;
+  padding-bottom: 2em;
+
+  // &::before {
+  //   content: "";
+  //   position: absolute;
+  //   top: -105px;
+  //   left: 0;
+  //   bottom: 0;
+  //   right: 0;
+  //   background: url(../../assets/abstracts/marble_popup.png);
+  //   background-repeat: no-repeat;
+  //   background-size: cover;
+  //   z-index: -1;
+  // }
+
+  .user_header {
+    max-width: 560px;
+    width: 100%;
+    margin: 0 auto 1.5em;
+    background-color: #fff;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1rem;
+
+    @media (max-width: 576px) {
+      max-width: 90%;
+    }
+
+    &-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+
+      > div {
+        display: grid;
+        place-items: center;
+      }
+    }
+  }
+
+  .tabs-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 5px;
+    width: fit-content;
+    margin: 0 auto 1.5em;
+
+    > div {
+      padding: 5px 0.75em;
+      background-color: #fff;
+      cursor: pointer;
+      transition: 250ms background-color linear;
+      border-radius: 5px;
+
+      &.active {
+        background-color: var(--btn-secondary);
+
+        p {
+          color: #fff;
+        }
+      }
+
+      p {
+        color: var(--btn-secondary);
+        font-size: 1em;
+        line-height: 24px;
+      }
+    }
+  }
+
+  .tabs-content {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+}

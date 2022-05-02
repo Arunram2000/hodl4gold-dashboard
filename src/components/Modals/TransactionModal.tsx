@@ -2,28 +2,7 @@ import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Backdrop from "./Backdrop";
 import "./Modal.scss";
-
-const modalVaraints = {
-  initial: {
-    opacity: 0,
-    scale: 0.5,
-    x: "-50%",
-    y: "-50%",
-  },
-  animate: {
-    opacity: 1,
-    transition: { duration: 0.3 },
-    scale: 1,
-    x: "-50%",
-    y: "-50%",
-  },
-  exit: {
-    opacity: 0,
-    scale: 0,
-    x: "-50%",
-    y: "-50%",
-  },
-};
+import { modalVaraints } from "../../constants/variants";
 
 interface ITransactionModal {
   modal: boolean;
@@ -32,7 +11,12 @@ interface ITransactionModal {
   status: "pending" | "success" | "error";
 }
 
-const TransactionModal: React.FC<ITransactionModal> = ({ modal, handleClose, message, status }) => {
+const TransactionModal: React.FC<ITransactionModal> = ({
+  modal,
+  handleClose,
+  message,
+  status,
+}) => {
   const getContent = () => {
     switch (status) {
       case "error":

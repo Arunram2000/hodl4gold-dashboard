@@ -19,27 +19,46 @@ export interface ICurrentEvent {
   eventUserList: IEventUserList[];
 }
 
-export const getUserAllowance = async (address: string, provider: any) => {
+export const getUserAllowance = async (
+  address: string,
+  provider: any,
+  chainId: number
+) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
-  const tokenContract = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, signer);
+  const tokenContract = new ethers.Contract(
+    TOKEN_ADDRESS[chainId],
+    tokenAbi,
+    signer
+  );
 
-  const userAllowance = await tokenContract.allowance(address, LOTTO_ADDRESS);
+  const userAllowance = await tokenContract.allowance(
+    address,
+    LOTTO_ADDRESS[chainId]
+  );
   const val = userAllowance.toString();
   return Number(ethers.utils.formatUnits(val, "gwei"));
 };
 
-export const IncreaseUserAllowance = async (address: string, provider: any) => {
+export const IncreaseUserAllowance = async (
+  address: string,
+  provider: any,
+  chainId: number
+) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
-  const tokenContract = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, signer);
+  const tokenContract = new ethers.Contract(
+    TOKEN_ADDRESS[chainId],
+    tokenAbi,
+    signer
+  );
 
   const allowanceValue = ethers.utils
     .parseUnits("100000000000000000", "gwei")
     .toString();
 
   const tx = await tokenContract.increaseAllowance(
-    LOTTO_ADDRESS,
+    LOTTO_ADDRESS[chainId],
     allowanceValue
   );
   await tx.wait();
@@ -49,18 +68,23 @@ export const IncreaseUserAllowance = async (address: string, provider: any) => {
 export const buyTicket = async (
   address: string,
   provider: any,
+  chainId: number,
   lotteryNumber: number
 ) => {
   try {
     const etherProvider = new ethers.providers.Web3Provider(provider);
     const signer = etherProvider.getSigner(address);
-    const lottoContract = new ethers.Contract(LOTTO_ADDRESS, lottoAbi, signer);
+    const lottoContract = new ethers.Contract(
+      LOTTO_ADDRESS[chainId],
+      lottoAbi,
+      signer
+    );
     const tx = await lottoContract.joinEvent(lotteryNumber);
     await tx.wait();
 
     await sleep();
     return {
-      data: await getCurrentEventInfo(address, provider),
+      data: await getCurrentEventInfo(address, provider, chainId),
     };
   } catch (error: any) {
     return {
@@ -74,11 +98,16 @@ export const buyTicket = async (
 export const getEventUserList = async (
   address: string,
   provider: any,
+  chainId: number,
   eventId: string
 ) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
-  const lottoContract = new ethers.Contract(LOTTO_ADDRESS, lottoAbi, signer);
+  const lottoContract = new ethers.Contract(
+    LOTTO_ADDRESS[chainId],
+    lottoAbi,
+    signer
+  );
 
   const eventUserList = await lottoContract.getEventUserList(eventId);
 
@@ -95,17 +124,27 @@ export const getEventUserList = async (
   return data;
 };
 
-export const getCurrentEventInfo = async (address: string, provider: any) => {
+export const getCurrentEventInfo = async (
+  address: string,
+  provider: any,
+  chainId: number
+) => {
   try {
     const etherProvider = new ethers.providers.Web3Provider(provider);
     const signer = etherProvider.getSigner(address);
-    const lottoContract = new ethers.Contract(LOTTO_ADDRESS, lottoAbi, signer);
+    const lottoContract = new ethers.Contract(
+      LOTTO_ADDRESS[chainId],
+      lottoAbi,
+      signer
+    );
     const eventInfo = await lottoContract.getCurrentEventInfo();
     const data = await getEventUserList(
       address,
       provider,
+      chainId,
       eventInfo[0].toString()
     );
+
     return {
       data: {
         eventId: eventInfo[0].toString(),
@@ -119,10 +158,18 @@ export const getCurrentEventInfo = async (address: string, provider: any) => {
   }
 };
 
-export const getRecentWinners = async (address: string, provider) => {
+export const getRecentWinners = async (
+  address: string,
+  provider,
+  chainId: number
+) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
-  const lottoContract = new ethers.Contract(LOTTO_ADDRESS, lottoAbi, signer);
+  const lottoContract = new ethers.Contract(
+    LOTTO_ADDRESS[chainId],
+    lottoAbi,
+    signer
+  );
   const eventInfo = await lottoContract.getCurrentEventInfo();
   const currentEventId = Number(eventInfo[0].toString());
 
@@ -133,10 +180,30 @@ export const getRecentWinners = async (address: string, provider) => {
   const data = await getEventUserList(
     address,
     provider,
+    chainId,
     String(currentEventId - 1)
   );
 
   const filteredData = data.filter((f) => Number(f.amount) !== 0);
 
   return [...filteredData.sort((a, b) => Number(b.amount) - Number(a.amount))];
+};
+
+export const getTicketFee = async (
+  address: string,
+  provider,
+  chainId: number
+) => {
+  const etherProvider = new ethers.providers.Web3Provider(provider);
+  const signer = etherProvider.getSigner(address);
+  const lottoContract = new ethers.Contract(
+    LOTTO_ADDRESS[chainId],
+    lottoAbi,
+    signer
+  );
+
+  const ticketFee = await lottoContract.ticketfee();
+  const fee = ethers.utils.formatEther(ticketFee.toString());
+
+  return Number(fee);
 };

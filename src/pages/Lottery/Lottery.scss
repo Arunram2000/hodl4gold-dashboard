@@ -21,7 +21,14 @@
         padding: 1em 2em;
         display: flex;
         align-items: center;
-        gap: 10px;
+        justify-content: space-between;
+        gap: 15px;
+
+        > div {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
       }
 
       .content {

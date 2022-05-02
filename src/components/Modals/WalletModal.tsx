@@ -11,28 +11,7 @@ import { TransactionContext } from "../../store/context/TransactionContext";
 import metamaskLogo from "../../assets/images/metamask.png";
 import walletconnectLogo from "../../assets/icons/walletconnect.png";
 import close from "../../assets/icons/close.svg";
-
-const modalVaraints = {
-  initial: {
-    opacity: 0,
-    scale: 0.5,
-    x: "-50%",
-    y: "-50%",
-  },
-  animate: {
-    opacity: 1,
-    transition: { duration: 0.3 },
-    scale: 1,
-    x: "-50%",
-    y: "-50%",
-  },
-  exit: {
-    opacity: 0,
-    scale: 0,
-    x: "-50%",
-    y: "-50%",
-  },
-};
+import { modalVaraints } from "../../constants/variants";
 
 interface IWalletModal {
   modal: boolean;

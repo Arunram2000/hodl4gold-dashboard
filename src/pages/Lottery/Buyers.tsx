@@ -8,7 +8,7 @@ import {
 } from "../../Utils/lottery/methods";
 
 const Buyers: React.FC = () => {
-  const { account, library } = useWeb3React();
+  const { account, library, chainId } = useWeb3React();
   const [currentEventInfo, setCurrentEventInfo] = useState<IEventUserList[]>(
     []
   );
@@ -16,7 +16,11 @@ const Buyers: React.FC = () => {
   const handleGetEventData = useCallback(async () => {
     if (account) {
       try {
-        const eventInfo = await getCurrentEventInfo(account, library?.provider);
+        const eventInfo = await getCurrentEventInfo(
+          account,
+          library?.provider,
+          chainId
+        );
         if (eventInfo) setCurrentEventInfo(eventInfo.data.eventUserList);
       } catch (error) {
         console.log(error);
@@ -24,7 +28,7 @@ const Buyers: React.FC = () => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account]);
+  }, [account, chainId]);
 
   useEffect(() => {
     handleGetEventData();
