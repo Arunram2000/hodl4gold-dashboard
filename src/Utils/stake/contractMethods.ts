@@ -175,3 +175,27 @@ export const claimBUSD = async (provider, address: string, chainId: number) => {
   const tx = h4gstake.claimBusd(address);
   return tx.wait();
 };
+
+export const getWithdrawDetails=(provider, address: string, chainId: number) => {
+  const etherProvider = new ethers.providers.Web3Provider(provider);
+  const signer = etherProvider.getSigner(address);
+  const h4gstake = new ethers.Contract(
+    STAKING_ADDRESS[chainId],
+    stakeabi,
+    signer
+  );
+
+  return h4gstake.getWithdrawDetails();
+}
+
+export const getDepositDetails=(provider, address: string, chainId: number) => {
+  const etherProvider = new ethers.providers.Web3Provider(provider);
+  const signer = etherProvider.getSigner(address);
+  const h4gstake = new ethers.Contract(
+    STAKING_ADDRESS[chainId],
+    stakeabi,
+    signer
+  );
+  
+  return h4gstake.getDepositDetails();
+}
