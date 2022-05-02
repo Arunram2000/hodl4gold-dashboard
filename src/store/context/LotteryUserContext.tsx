@@ -60,7 +60,7 @@ const LotteryUserContextProvider: React.FC<{ children: ReactNode }> = ({
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account]);
+  }, [account, chainId]);
 
   useEffect(() => {
     handleGetUserData();
