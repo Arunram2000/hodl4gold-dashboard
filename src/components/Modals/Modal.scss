@@ -251,6 +251,12 @@
           outline: 1px solid rgba(252, 188, 103, 0.5);
         }
       }
+
+      &_grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
     }
 
     button {

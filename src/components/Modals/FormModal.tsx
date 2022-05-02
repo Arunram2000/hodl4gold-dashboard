@@ -13,6 +13,9 @@ const getLink = (username: string) =>
 const initialState = {
   username: "",
   discord_username: "",
+  instagram_username: "",
+  telegram_firstname: "",
+  telegram_lastname: "",
 };
 
 interface IFormMdal {
@@ -40,7 +43,11 @@ const FormModal: React.FC<IFormMdal> = ({ refetch, modal }) => {
     try {
       setLoading(true);
       setError(null);
-      const { data } = await getUsername(formData);
+      const formValues = {
+        ...formData,
+        telegram_username: `${formData.telegram_firstname} ${formData.telegram_lastname}`,
+      };
+      const { data } = await getUsername(formValues);
 
       if (Array.isArray(data.errors)) {
         setError(
@@ -57,7 +64,7 @@ const FormModal: React.FC<IFormMdal> = ({ refetch, modal }) => {
         return;
       }
 
-      await updateUserApi(account, formData);
+      await updateUserApi(account, formValues);
       refetch();
       setLoading(false);
     } catch (error) {
@@ -84,9 +91,12 @@ const FormModal: React.FC<IFormMdal> = ({ refetch, modal }) => {
             exit="exit"
           >
             <h3>Getting to know you better</h3>
-            <p className="mb-20 mt-10">
+            <p className="mb-5 mt-10">
               This is a irreversible process. So kindly give the information
               correctly.
+            </p>
+            <p className="mb-20 text-warning">
+              *All the fields are case sensitive.
             </p>
             {error && (
               <p style={{ fontSize: 12, color: "tomato", textAlign: "center" }}>
@@ -126,6 +136,38 @@ const FormModal: React.FC<IFormMdal> = ({ refetch, modal }) => {
                   onChange={handleChange}
                   required
                 />
+              </div>
+              <div className="form_input">
+                <label htmlFor="discord_username">Instagram username</label>
+                <input
+                  type="text"
+                  name="instagram_username"
+                  placeholder="@instagram_username"
+                  value={formData.instagram_username}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form_input">
+                <label htmlFor="discord_username">Telegram username</label>
+                <div className="form_input_grid">
+                  <input
+                    type="text"
+                    name="telegram_firstname"
+                    placeholder="@first_name"
+                    value={formData.telegram_firstname}
+                    onChange={handleChange}
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="telegram_lastname"
+                    placeholder="@last_name"
+                    value={formData.telegram_lastname}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
               {/* <input type="email" placeholder="Email address" required /> */}
               <Button variant="secondary" disabled={loading}>

@@ -4,6 +4,7 @@ import { useWeb3React } from "@web3-react/core";
 
 import twitter from "../../../assets/images/twitter.png";
 import discord from "../../../assets/images/discord.png";
+import telegram from "../../../assets/images/telegram.png";
 import checkIcon from "../../../assets/icons/check.svg";
 
 import { Button } from "../../../components";
@@ -12,6 +13,7 @@ import {
   verifyFollowingUserApi,
   verifyLikedTweetsApi,
   verifyRetweetsApi,
+  verifyTelegramMember,
   verifyTweetsApi,
 } from "../../../api/denApi";
 import { DenUserContext } from "../../../store/context/DenUserContext";
@@ -26,8 +28,9 @@ const getLinkText = (type, ref_id) => {
   return "";
 };
 
-const getIcon = (media) => {
+const getIcon = (media: string) => {
   if (media === "discord") return discord;
+  if (media === "telegram") return telegram;
   return twitter;
 };
 
@@ -199,6 +202,34 @@ const Task = ({
     }
   };
 
+  const handleJoinTelegram = async () => {
+    try {
+      setLoading(true);
+      const { data } = await verifyTelegramMember(eventId, {
+        task_id: _id,
+        account: account,
+        username: userData?.telegram_username,
+      });
+
+      console.log(data);
+
+      if (data.error) {
+        setError(data.error.message);
+        setTimeout(() => setError(null), 5000);
+        return;
+      }
+
+      await fetchUserData();
+      refetch();
+    } catch (error) {
+      console.log(error);
+      setError("something went wrong.please try again after sometime");
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (type) => {
     if (!userData?.username) {
       setError("username is required");
@@ -209,7 +240,15 @@ const Task = ({
     if (type === "like") handleLike();
     if (type === "retweet") handleRetweet();
     if (type === "join_discord") handleJoinDiscord();
+    if (type === "join_telegram") handleJoinTelegram();
     if (type === "tweet") handleTweet();
+  };
+
+  const getMediaName = (mediaValue: string) => {
+    if (mediaValue === "discord") return userData?.discord_username;
+    if (mediaValue === "telegram") return userData?.telegram_username;
+    if (mediaValue === "instagram") return userData?.instagram_username;
+    return userData?.username;
   };
 
   return (
@@ -251,11 +290,7 @@ const Task = ({
                   <input
                     type="text"
                     placeholder={"@username"}
-                    value={
-                      media === "discord"
-                        ? userData?.discord_username
-                        : userData?.username
-                    }
+                    value={getMediaName(media)}
                     readOnly
                   />
                   <p className={error ? "error_input active" : "error_input"}>

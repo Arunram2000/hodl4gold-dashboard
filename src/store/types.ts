@@ -47,6 +47,8 @@ export interface IDenUser {
   createdAt: string;
   description: string;
   discord_username: string;
+  instagram_username: string;
+  telegram_username: string;
   image: string;
   rewards: number;
   updatedAt: string;

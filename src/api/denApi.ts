@@ -51,3 +51,10 @@ export const verifyDiscordMember = (id, { account, task_id, username }) =>
   API.get(
     `/api/discord/${id}?account=${account}&task_id=${task_id}&username=${username}`
   );
+
+// TELEGRAM API
+
+export const verifyTelegramMember = (id, { account, task_id, username }) =>
+  API.get(
+    `/api/telegram/${id}?account=${account}&task_id=${task_id}&username=${username}`
+  );

@@ -97,6 +97,10 @@ a {
   }
 }
 
+.text-warning {
+  color: var(--text-warning);
+}
+
 p {
   font-size: 1.2rem;
   line-height: 2rem;
@@ -155,7 +159,7 @@ h5 {
 
   &::before {
     font-size: 50px;
-    color: gold;
+    color: var(--btn-secondary);
 
     @media (max-width: 768px) {
       font-size: 30px;

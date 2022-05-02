@@ -62,11 +62,18 @@ const DenAccount: React.FC<IDenAccount> = ({ handleClose, modal }) => {
             exit="exit"
           >
             <div className="accounts">
-              {" "}
               <h3 className="mb-20">{`@${userData?.username}`}</h3>
               <div data-position="flex-between" className="mb-10">
                 <p>Discord username</p>
                 <h4>{userData?.discord_username}</h4>
+              </div>
+              <div data-position="flex-between" className="mb-10">
+                <p>Telegram username</p>
+                <h4>{userData?.telegram_username}</h4>
+              </div>
+              <div data-position="flex-between" className="mb-10">
+                <p>Instagram username</p>
+                <h4>{userData?.instagram_username}</h4>
               </div>
               <section className="mb-20">{renderAddress}</section>
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
