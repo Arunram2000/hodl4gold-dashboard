@@ -1,12 +1,13 @@
-import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Close,
   // Illustration1,
   // Illustration2,
-  // Refresh,
+  Refresh,
 } from "../../components/Icons";
 import Button from "../Button";
+import { ReactComponent as Minus } from "../../assets/icons/minus.svg";
 import { generateRandomNumber } from "../../Utils/lottery/helpers";
 import { AnimatePresence, motion } from "framer-motion";
 import Backdrop from "./Backdrop";
@@ -36,10 +37,8 @@ const modalVaraints = {
 interface LotteryModal {
   modal: boolean;
   handleClose?: () => void;
-  handleBuyTicket: (lotterNumber: number) => Promise<void>;
+  handleBuyTicket: (lotterNumberList: number[]) => Promise<void>;
   numbersList: string[];
-  tab: number;
-  setTab: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const LotteryModal: React.FC<LotteryModal> = ({
@@ -47,13 +46,10 @@ const LotteryModal: React.FC<LotteryModal> = ({
   handleClose,
   handleBuyTicket,
   numbersList,
-  tab,
-  setTab,
 }) => {
-  const [lotteryNumber, setLotteryNumber] = useState("");
+  // const [lotteryNumber, setLotteryNumber] = useState("");
   const [lotteryList, setLotteryList] = useState<string[]>([]);
-  const [randomNumber, setRandomNumber] = useState("");
-  const [error, setError] = useState<string>();
+  // const [error, setError] = useState<string>();
 
   useEffect(() => {
     setLotteryList([String(generateRandomNumber(numbersList))]);
@@ -61,34 +57,42 @@ const LotteryModal: React.FC<LotteryModal> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(lotteryList);
-  useMemo(() => {
-    if (lotteryNumber.length > 6) return setError("maximun 6 digit is allowed");
-    if (lotteryNumber.length > 0) {
-      if (lotteryNumber.startsWith("0"))
-        return setError("number must not starts with 0");
-      if (numbersList.includes(lotteryNumber))
-        return setError(
-          "This number is already taken .choose a different a one"
-        );
-      if (lotteryNumber.length < 6) return setError("number should be 6 digit");
-    }
-    return setError(undefined);
+  // useMemo(() => {
+  //   if (lotteryNumber.length > 6) return setError("maximun 6 digit is allowed");
+  //   if (lotteryNumber.length > 0) {
+  //     if (lotteryNumber.startsWith("0"))
+  //       return setError("number must not starts with 0");
+  //     if (numbersList.includes(lotteryNumber))
+  //       return setError(
+  //         "This number is already taken .choose a different a one"
+  //       );
+  //     if (lotteryNumber.length < 6) return setError("number should be 6 digit");
+  //   }
+  //   return setError(undefined);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lotteryNumber]);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [lotteryNumber]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value.length <= 6) setLotteryNumber(value);
+  const handleRefresh = (index: number) => {
+    const list = [...lotteryList];
+    list[index] = String(
+      generateRandomNumber([...numbersList, ...lotteryList])
+    );
+    setLotteryList([...list]);
   };
 
-  const getRandomNumber = () => {
-    setRandomNumber(generateRandomNumber(numbersList));
+  const handleRemove = (index: number) => {
+    const list = [...lotteryList];
+    list.splice(index, 1);
+    setLotteryList([...list]);
   };
 
   const renderTab = (
-    <div className={"lottery_content"}>
+    <div
+      className={
+        lotteryList.length > 1 ? "lottery_content active" : "lottery_content"
+      }
+    >
       {lotteryList.map((list, index) => (
         <div key={index.toString()}>
           <input
@@ -97,6 +101,14 @@ const LotteryModal: React.FC<LotteryModal> = ({
             value={list}
             onChange={({ target }) => {}}
           />
+          {index !== 0 && (
+            <div className="remove_icon" onClick={() => handleRemove(index)}>
+              <Minus />
+            </div>
+          )}
+          <div className="icon" onClick={() => handleRefresh(index)}>
+            <Refresh />
+          </div>
         </div>
       ))}
     </div>
@@ -132,8 +144,12 @@ const LotteryModal: React.FC<LotteryModal> = ({
             </div>
           </div>
           {renderTab}
-          <div>
-            <Button onClick={() => handleBuyTicket(5)}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              onClick={() =>
+                handleBuyTicket([...lotteryList.map((l) => Number(l))])
+              }
+            >
               Purchase a Ticket
             </Button>
           </div>

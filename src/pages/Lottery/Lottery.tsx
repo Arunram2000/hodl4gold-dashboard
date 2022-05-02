@@ -26,7 +26,6 @@ const Lottery: React.FC = () => {
     useState<ICurrentEvent | null>(null);
   const { isAllowanceApproved, tokenBalance, refetch } =
     useContext(LotteryUserContext);
-  const [tab, setTab] = useState(1);
   const [ticketFee, setTicketFee] = useState(0);
 
   const handleGetEventData = useCallback(async () => {
@@ -56,7 +55,7 @@ const Lottery: React.FC = () => {
     handleGetEventData();
   }, [handleGetEventData]);
 
-  const handleBuyTicket = async (lotteryNumber: number) => {
+  const handleBuyTicket = async (lotteryNumberList: number[]) => {
     if (!account) return;
     if (tokenBalance < 1)
       return setTransaction({
@@ -69,7 +68,7 @@ const Lottery: React.FC = () => {
       account,
       library?.provider,
       chainId,
-      lotteryNumber
+      lotteryNumberList
     );
 
     if (error) {
@@ -78,7 +77,6 @@ const Lottery: React.FC = () => {
 
     if (data) setCurrentEventInfo(data.data);
     setModal(false);
-    setTab(1);
     setTransaction({ loading: true, status: "success" });
   };
 
@@ -193,8 +191,6 @@ const Lottery: React.FC = () => {
       </div>
       <LotteryModal
         modal={modal}
-        tab={tab}
-        setTab={setTab}
         handleClose={() => setModal(false)}
         handleBuyTicket={handleBuyTicket}
         numbersList={

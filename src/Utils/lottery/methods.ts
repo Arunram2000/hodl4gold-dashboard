@@ -69,7 +69,7 @@ export const buyTicket = async (
   address: string,
   provider: any,
   chainId: number,
-  lotteryNumber: number
+  lotteryNumberList: number[]
 ) => {
   try {
     const etherProvider = new ethers.providers.Web3Provider(provider);
@@ -79,7 +79,8 @@ export const buyTicket = async (
       lottoAbi,
       signer
     );
-    const tx = await lottoContract.joinEvent(lotteryNumber);
+
+    const tx = await lottoContract.joinEvent(lotteryNumberList);
     await tx.wait();
 
     await sleep();
