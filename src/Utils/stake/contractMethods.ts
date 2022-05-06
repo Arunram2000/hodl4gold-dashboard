@@ -133,6 +133,15 @@ export const getContractDetails = async (
 
   const apy = await h4gstake.getApy();
   const endtime = await h4gstake.endTime();
+  const withdrawFee = await h4gstake.getWithdrawDetails();
+  const withdrawFeeDividens = withdrawFee.toString()?.split(",");
+  const formattedWithdrawFee =
+    Number(withdrawFeeDividens[0]) / Number(withdrawFeeDividens[1]);
+
+  const depositFee = await h4gstake.getDepositDetails();
+  const depositFeeDividens = depositFee.toString()?.split(",");
+  const formatteddepositFee =
+    Number(depositFeeDividens[0]) / Number(depositFeeDividens[1]);
 
   const fundsStaking = Number(
     ethers.utils.formatUnits(apy[0].toString(), "gwei")
@@ -147,6 +156,8 @@ export const getContractDetails = async (
   return {
     endTime: Number(endtime.toString()) * 1000,
     apy: formatedApy,
+    withdrawFee: isNaN(formattedWithdrawFee) ? 0 : formattedWithdrawFee * 100,
+    depositFee: isNaN(formatteddepositFee) ? 0 : formatteddepositFee * 100,
   };
 };
 
@@ -175,27 +186,3 @@ export const claimBUSD = async (provider, address: string, chainId: number) => {
   const tx = h4gstake.claimBusd(address);
   return tx.wait();
 };
-
-export const getWithdrawDetails=(provider, address: string, chainId: number) => {
-  const etherProvider = new ethers.providers.Web3Provider(provider);
-  const signer = etherProvider.getSigner(address);
-  const h4gstake = new ethers.Contract(
-    STAKING_ADDRESS[chainId],
-    stakeabi,
-    signer
-  );
-
-  return h4gstake.getWithdrawDetails();
-}
-
-export const getDepositDetails=(provider, address: string, chainId: number) => {
-  const etherProvider = new ethers.providers.Web3Provider(provider);
-  const signer = etherProvider.getSigner(address);
-  const h4gstake = new ethers.Contract(
-    STAKING_ADDRESS[chainId],
-    stakeabi,
-    signer
-  );
-  
-  return h4gstake.getDepositDetails();
-}

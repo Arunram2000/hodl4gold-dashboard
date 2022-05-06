@@ -27,6 +27,8 @@ const Farm: React.FC = () => {
   const [contractData, setContractData] = useState<IContractData>({
     apy: 0,
     endTime: undefined,
+    withdrawFee: 0,
+    depositFee: 0,
   });
   const { userData, setUserData, refetch, isLoading } =
     useContext(StakingUserContext);
@@ -298,11 +300,11 @@ const Farm: React.FC = () => {
           <div>
             <div data-position="flex-between">
               <p className="primary">Deposit Fee</p>
-              <b>0%</b>
+              <b>{contractData.depositFee}%</b>
             </div>
             <div data-position="flex-between">
               <p className="primary">Withdraw Fee</p>
-              <b>0.5%</b>
+              <b>{contractData.withdrawFee}%</b>
             </div>
           </div>
           {!account ? (
