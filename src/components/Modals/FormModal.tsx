@@ -165,7 +165,6 @@ const FormModal: React.FC<IFormMdal> = ({ refetch, modal }) => {
                     placeholder="@last_name"
                     value={formData.telegram_lastname}
                     onChange={handleChange}
-                    required
                   />
                 </div>
               </div>
