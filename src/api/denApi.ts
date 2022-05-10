@@ -1,9 +1,15 @@
 import axios from "axios";
 
+export const API_KEY =
+  "QkSv0oxP75TVkPPZLdWcIBIEnYvtDIetCLVCFuxktEe3HMAV6aGj8BudQTbdLEMe";
+
 // export const BASE_URL = "http://localhost:8000";
 export const BASE_URL = "https://hodl4gold-server.herokuapp.com";
 
-const API = axios.create({ baseURL: BASE_URL });
+const API = axios.create({
+  baseURL: BASE_URL,
+  headers: { Authorization: `Bearer ${API_KEY}` },
+});
 
 // USER API
 
@@ -40,9 +46,9 @@ export const verifyRetweetsApi = (
     `/api/twitter/verify_retweet/${id}?account=${account}&task_id=${task_id}&username=${username}&tweet_id=${tweet_id}`
   );
 
-export const verifyTweetsApi = (id, { account, task_id, hashTag, username }) =>
+export const verifyTweetsApi = (id, { account, task_id, task, username }) =>
   API.get(
-    `/api/twitter/verify_tweet/${id}?account=${account}&task_id=${task_id}&username=${username}&hashTag=${hashTag}`
+    `/api/twitter/verify_tweet/${id}?account=${account}&task_id=${task_id}&username=${username}&task=${task}`
   );
 
 // DISCORD API

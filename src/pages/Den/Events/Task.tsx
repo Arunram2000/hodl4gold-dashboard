@@ -68,8 +68,6 @@ const Task = ({
         task_username: ref_id,
       });
 
-      console.log(data);
-
       if (data.error) {
         setError(data.error.message);
         setTimeout(() => setError(null), 5000);
@@ -148,11 +146,12 @@ const Task = ({
     try {
       setLoading(true);
       const hashTag = ref_id.replace("#", "");
+
       const { data } = await verifyTweetsApi(eventId, {
         task_id: _id,
         account: account,
         username: userData?.username,
-        hashTag,
+        task: hashTag,
       });
 
       console.log(data);
@@ -210,8 +209,6 @@ const Task = ({
         account: account,
         username: userData?.telegram_username,
       });
-
-      console.log(data);
 
       if (data.error) {
         setError(data.error.message);

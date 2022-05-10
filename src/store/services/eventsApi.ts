@@ -1,7 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BASE_URL } from "../../api/denApi";
+import { API_KEY, BASE_URL } from "../../api/denApi";
 
-const eventsApiHeaders = {};
+const eventsApiHeaders = {
+  Authorization: `Bearer ${API_KEY}`,
+};
 const createRequest = (url) => ({ url, headers: eventsApiHeaders });
 
 export const eventsApi = createApi({
