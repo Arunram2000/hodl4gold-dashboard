@@ -21,6 +21,7 @@ const Event: React.FC<IEventProps> = ({
   refetch,
   _id,
   createdAt,
+  end_date,
 }) => {
   const [toggle, setToggle] = useState(1);
 
@@ -100,7 +101,7 @@ const Event: React.FC<IEventProps> = ({
       <div className="event_container-content">
         <div className="event_container-content_header mb-15">
           <h3>{event_name}</h3>
-          <b>{moment(createdAt).format("ll")}</b>
+          <b>{moment(end_date).format("ll")}</b>
         </div>
         <div>
           {
