@@ -13,13 +13,13 @@ import { IDenUser } from "../types";
 interface IDenUserContext {
   userData: IDenUser | null;
   isLoading: boolean;
-  fetchUserData: () => Promise<void>;
+  setUserData: React.Dispatch<React.SetStateAction<IDenUser>>;
 }
 
 export const DenUserContext = createContext<IDenUserContext>({
   isLoading: false,
   userData: null,
-  fetchUserData: async () => {},
+  setUserData: () => {},
 });
 
 const DenUserContextProvider: React.FC<{ children: ReactNode }> = ({
@@ -52,7 +52,7 @@ const DenUserContextProvider: React.FC<{ children: ReactNode }> = ({
       value={{
         isLoading,
         userData,
-        fetchUserData: handleGetUserData,
+        setUserData,
       }}
     >
       {children}

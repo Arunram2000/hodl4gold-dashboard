@@ -9,6 +9,7 @@ import checkIcon from "../../../assets/icons/check.svg";
 
 import { Button } from "../../../components";
 import {
+  getUserApi,
   verifyDiscordMember,
   verifyFollowingUserApi,
   verifyLikedTweetsApi,
@@ -48,15 +49,26 @@ const Task = ({
   media,
 }) => {
   const { account } = useWeb3React();
-  const { fetchUserData, userData } = useContext(DenUserContext);
+  const { setUserData, userData } = useContext(DenUserContext);
   const [loading, setLoading] = useState(false);
   const [openForm, setOpenForm] = useState(false);
   const [error, setError] = useState("");
-  const isHeParticipated = participants.some(
-    (participant) =>
-      participant.task_id === _id &&
-      participant.account === account?.toLocaleLowerCase()
+  const [isHeParticipated, setIsHeParticipated] = useState(
+    participants.some(
+      (participant) =>
+        participant.task_id === _id &&
+        participant.account === account?.toLocaleLowerCase()
+    )
   );
+
+  const refetchUserData = async () => {
+    try {
+      const { data } = await getUserApi({ account });
+      setUserData({ ...userData, rewards: data.rewards });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleFollow = async () => {
     try {
@@ -68,16 +80,15 @@ const Task = ({
         task_username: ref_id,
       });
 
-      console.log(data);
-
       if (data.error) {
         setError(data.error.message);
         setTimeout(() => setError(null), 5000);
         return;
       }
 
-      await fetchUserData();
-      refetch();
+      setIsHeParticipated(true);
+      setOpenForm(false);
+      await refetchUserData();
     } catch (error) {
       console.log(error);
       setError("something went wrong.please try again after sometime");
@@ -104,8 +115,9 @@ const Task = ({
         return;
       }
 
-      await fetchUserData();
-      refetch();
+      setIsHeParticipated(true);
+      setOpenForm(false);
+      await refetchUserData();
     } catch (error) {
       console.log(error);
       setError("something went wrong.please try again after sometime");
@@ -133,8 +145,9 @@ const Task = ({
         return;
       }
 
-      await fetchUserData();
-      refetch();
+      setIsHeParticipated(true);
+      setOpenForm(false);
+      await refetchUserData();
     } catch (error) {
       console.log(error);
       setError("something went wrong.please try again after sometime");
@@ -148,11 +161,12 @@ const Task = ({
     try {
       setLoading(true);
       const hashTag = ref_id.replace("#", "");
+
       const { data } = await verifyTweetsApi(eventId, {
         task_id: _id,
         account: account,
         username: userData?.username,
-        hashTag,
+        task: hashTag,
       });
 
       console.log(data);
@@ -163,8 +177,9 @@ const Task = ({
         return;
       }
 
-      await fetchUserData();
-      refetch();
+      setIsHeParticipated(true);
+      setOpenForm(false);
+      await refetchUserData();
     } catch (error) {
       console.log(error);
       setError("something went wrong.please try again after sometime");
@@ -177,10 +192,11 @@ const Task = ({
   const handleJoinDiscord = async () => {
     try {
       setLoading(true);
+      console.log(userData?.discord_username);
       const { data } = await verifyDiscordMember(eventId, {
         task_id: _id,
         account: account,
-        username: userData?.discord_username,
+        username: encodeURIComponent(userData?.discord_username),
       });
 
       console.log(data);
@@ -191,8 +207,9 @@ const Task = ({
         return;
       }
 
-      await fetchUserData();
-      refetch();
+      setIsHeParticipated(true);
+      setOpenForm(false);
+      await refetchUserData();
     } catch (error) {
       console.log(error);
       setError("something went wrong.please try again after sometime");
@@ -211,16 +228,15 @@ const Task = ({
         username: userData?.telegram_username,
       });
 
-      console.log(data);
-
       if (data.error) {
         setError(data.error.message);
         setTimeout(() => setError(null), 5000);
         return;
       }
 
-      await fetchUserData();
-      refetch();
+      setIsHeParticipated(true);
+      setOpenForm(false);
+      await refetchUserData();
     } catch (error) {
       console.log(error);
       setError("something went wrong.please try again after sometime");
