@@ -434,6 +434,11 @@
 						"internalType": "uint256",
 						"name": "busdreward",
 						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "stakereward",
+						"type": "uint256"
 					}
 				],
 				"internalType": "struct Staking.UserDetails",
@@ -574,6 +579,11 @@
 			{
 				"internalType": "uint256",
 				"name": "busdreward",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "stakereward",
 				"type": "uint256"
 			}
 		],
