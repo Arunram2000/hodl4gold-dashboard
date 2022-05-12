@@ -96,7 +96,7 @@ export const setCompound = async (
     signer
   );
 
-  const tx = await h4gstake.compound(address);
+  const tx = await h4gstake.compound();
   await tx.wait();
 };
 
@@ -114,7 +114,7 @@ export const setHarvest = async (
     signer
   );
 
-  const tx = await h4gstake.harvest(address);
+  const tx = await h4gstake.harvest();
   await tx.wait();
 };
 
@@ -170,7 +170,7 @@ export const withdraw = async (provider, address: string, chainId: number) => {
     signer
   );
 
-  const tx = await h4gstake.withdraw(address, 1000);
+  const tx = await h4gstake.withdraw();
   await tx.wait();
 };
 
@@ -183,6 +183,6 @@ export const claimBUSD = async (provider, address: string, chainId: number) => {
     signer
   );
 
-  const tx = h4gstake.claimBusd(address);
+  const tx = h4gstake.claimBusd();
   return tx.wait();
 };

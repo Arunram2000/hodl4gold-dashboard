@@ -19,6 +19,7 @@ import {
 import { IContractData } from "../../store/types";
 import WithdrawModal from "../../components/Modals/WithdrawModal";
 import "./Home.scss";
+import { getRewardAmount } from "../../Utils/stake/userMethods";
 
 const Farm: React.FC = () => {
   const { account, library, chainId } = useWeb3React();
@@ -33,6 +34,7 @@ const Farm: React.FC = () => {
   const { userData, setUserData, refetch, isLoading } =
     useContext(StakingUserContext);
   const { setTransaction, loading } = useContext(TransactionContext);
+  const [block, setBlock] = useState(0);
 
   const handleGetApy = useCallback(async () => {
     if (account) {
@@ -49,6 +51,41 @@ const Farm: React.FC = () => {
   useEffect(() => {
     handleGetApy();
   }, [handleGetApy]);
+
+  const handleGetlatestData = useCallback(async () => {
+    if (account && userData.totalStaked) {
+      const rewards = await getRewardAmount(
+        library?.provider,
+        account,
+        chainId,
+        userData.totalStaked
+      );
+      setUserData({
+        ...userData,
+        rewards,
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [block]);
+
+  useEffect(() => {
+    handleGetlatestData();
+  }, [handleGetlatestData]);
+
+  useEffect(() => {
+    if (!library) return;
+
+    console.log(`listening for blocks...`);
+    library.on("block", (e) => {
+      setBlock(e);
+    });
+
+    return () => {
+      library.removeAllListeners("block");
+    };
+  }, [library]);
+
 
   const handleApprove = async () => {
     if (!account) return;

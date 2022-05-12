@@ -114,7 +114,7 @@ export const getUserWithdrawAmount = async (
       signer
     );
 
-    const amount = await h4gstake.withdrawAmount(address, 1000);
+    const amount = await h4gstake.withdrawAmount(address);
     const val = amount.toString().split(",");
     const withdrawAmount = Number(ethers.utils.formatUnits(val[0], "gwei"));
     const withdrawFee = Number(ethers.utils.formatUnits(val[1], "gwei"));
