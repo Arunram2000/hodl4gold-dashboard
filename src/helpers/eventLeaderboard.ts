@@ -1,4 +1,4 @@
-export const getUserRewards = (participants: any, tasks: any) => {
+export const getUserRewards = (participants: any) => {
   const addresses = [
     ...new Set(participants.map((participant) => participant.account)),
   ];
@@ -9,11 +9,7 @@ export const getUserRewards = (participants: any, tasks: any) => {
     );
     const rewardForEvent = singleParticipantData.reduce(
       (acc, participantData) => {
-        const taskData = tasks.find(
-          (task) => task._id.toString() === participantData.task_id
-        );
-        const reward = taskData ? taskData.reward_point : 0;
-        return acc + reward;
+        return acc + participantData.reward_point;
       },
       0
     );

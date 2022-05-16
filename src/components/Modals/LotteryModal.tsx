@@ -11,48 +11,25 @@ import { ReactComponent as Minus } from "../../assets/icons/minus.svg";
 import { generateRandomNumber } from "../../Utils/lottery/helpers";
 import { AnimatePresence, motion } from "framer-motion";
 import Backdrop from "./Backdrop";
-
-const modalVaraints = {
-  initial: {
-    opacity: 0,
-    scale: 0.5,
-    x: "-50%",
-    y: "-50%",
-  },
-  animate: {
-    opacity: 1,
-    transition: { duration: 0.3 },
-    scale: 1,
-    x: "-50%",
-    y: "-50%",
-  },
-  exit: {
-    opacity: 0,
-    scale: 0,
-    x: "-50%",
-    y: "-50%",
-  },
-};
+import { modalVaraints } from "../../constants/variants";
 
 interface LotteryModal {
   modal: boolean;
   handleClose?: () => void;
   handleBuyTicket: (lotterNumberList: number[]) => Promise<void>;
-  numbersList: string[];
 }
 
 const LotteryModal: React.FC<LotteryModal> = ({
   modal,
   handleClose,
   handleBuyTicket,
-  numbersList,
 }) => {
-  // const [lotteryNumber, setLotteryNumber] = useState("");
   const [lotteryList, setLotteryList] = useState<string[]>([]);
-  // const [error, setError] = useState<string>();
+  const [error, setError] = useState<string[]>([]);
 
   useEffect(() => {
-    setLotteryList([String(generateRandomNumber(numbersList))]);
+    setLotteryList([String(generateRandomNumber())]);
+    setError([""]);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -75,9 +52,7 @@ const LotteryModal: React.FC<LotteryModal> = ({
 
   const handleRefresh = (index: number) => {
     const list = [...lotteryList];
-    list[index] = String(
-      generateRandomNumber([...numbersList, ...lotteryList])
-    );
+    list[index] = String(generateRandomNumber());
     setLotteryList([...list]);
   };
 
@@ -87,6 +62,24 @@ const LotteryModal: React.FC<LotteryModal> = ({
     setLotteryList([...list]);
   };
 
+  const handleLotterInput = (value: string, index: number) => {
+    if (value.length > 6) return;
+    if (!/^[0-9]+$/.test(value)) return;
+
+    if (value.length < 6) {
+      error[index] = "random number must be 6 digit";
+      setError([...error]);
+    } else if (value.startsWith("0")) {
+      error[index] = "number must not starts with 0";
+      setError([...error]);
+    } else {
+      error[index] = "";
+      setError([...error]);
+    }
+    lotteryList[index] = value;
+    setLotteryList([...lotteryList]);
+  };
+
   const renderTab = (
     <div
       className={
@@ -94,21 +87,24 @@ const LotteryModal: React.FC<LotteryModal> = ({
       }
     >
       {lotteryList.map((list, index) => (
-        <div key={index.toString()}>
-          <input
-            type="number"
-            name={`lottery${index}`}
-            value={list}
-            onChange={({ target }) => {}}
-          />
-          {index !== 0 && (
-            <div className="remove_icon" onClick={() => handleRemove(index)}>
-              <Minus />
+        <div key={index.toString()} className="lottery_input">
+          <div>
+            <input
+              type="text"
+              name={`lottery${index}`}
+              value={list}
+              onChange={({ target }) => handleLotterInput(target.value, index)}
+            />
+            {index !== 0 && (
+              <div className="remove_icon" onClick={() => handleRemove(index)}>
+                <Minus />
+              </div>
+            )}
+            <div className="icon" onClick={() => handleRefresh(index)}>
+              <Refresh />
             </div>
-          )}
-          <div className="icon" onClick={() => handleRefresh(index)}>
-            <Refresh />
           </div>
+          {error[index] && <p style={{ color: "tomato" }}>{error[index]}</p>}
         </div>
       ))}
     </div>
@@ -130,14 +126,13 @@ const LotteryModal: React.FC<LotteryModal> = ({
               className={
                 lotteryList.length >= 10 ? "add_more inactive" : "add_more"
               }
-              onClick={() =>
+              onClick={() => {
                 setLotteryList([
                   ...lotteryList,
-                  String(
-                    generateRandomNumber([...numbersList, ...lotteryList])
-                  ),
-                ])
-              }
+                  String(generateRandomNumber()),
+                ]);
+                setError([...error, ""]);
+              }}
             >
               <p>Add more</p>
               <Close />
@@ -149,6 +144,7 @@ const LotteryModal: React.FC<LotteryModal> = ({
               onClick={() =>
                 handleBuyTicket([...lotteryList.map((l) => Number(l))])
               }
+              disabled={error.some((e) => e !== "")}
             >
               Purchase a Ticket
             </Button>

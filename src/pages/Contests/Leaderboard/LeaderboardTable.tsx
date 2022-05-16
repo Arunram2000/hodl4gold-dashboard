@@ -13,7 +13,6 @@ const LeaderboardTable: React.FC<{ leaderboardData: any[] }> = ({
         <table>
           <thead>
             <tr className="leaderboard_table-header">
-              {/* <th>Name</th> */}
               <th>Wallet Address</th>
               <th>Points</th>
             </tr>

@@ -1,14 +1,41 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Slider from "react-slick";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./Events.scss";
-import { useGetEventsQuery } from "../../../store/services/eventsApi";
 import Event from "./Event";
+import { getEventsApi } from "../../../api/denApi";
 
-const Events: React.FC = () => {
-  const { data, isFetching, isError, refetch } = useGetEventsQuery({});
+const Events: React.FC<{ account: string }> = ({ account }) => {
+  const [isFetching, setIsFetching] = useState(false);
+  const [isError, setIsError] = useState<string | null>(null);
+  const [data, setData] = useState<any[]>([]);
+
+  const handleGetData = useCallback(async () => {
+    try {
+      setIsFetching(true);
+      const { data } = await getEventsApi(account);
+      setData([...data]);
+    } catch (error: any) {
+      setIsError(error.message);
+    } finally {
+      setIsFetching(false);
+    }
+  }, [account]);
+
+  const refetch = async () => {
+    try {
+      const { data } = await getEventsApi(account);
+      setData([...data]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleGetData();
+  }, [handleGetData]);
 
   const settings = {
     dots: false,

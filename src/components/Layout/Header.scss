@@ -81,6 +81,12 @@
   }
 }
 
+.nav_container {
+  @media (max-width: 992px) {
+    display: none;
+  }
+}
+
 .navbar {
   background-color: #fff;
   height: 45px;
@@ -163,6 +169,20 @@
 
     @media (max-width: 600px) {
       flex-direction: column;
+    }
+  }
+}
+
+.side_bar_nav_links {
+  .link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 10px 0;
+
+    img {
+      width: 18px;
+      height: 18px;
     }
   }
 }

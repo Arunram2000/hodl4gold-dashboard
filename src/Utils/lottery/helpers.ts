@@ -3,13 +3,17 @@ export const sleep = (ms = 2000) =>
 
 export const getSplitedValue = (values: string) => values.split(",");
 
-export const generateRandomNumber = (arr: any[]): any => {
-  const rn = Math.floor(100000 + Math.random() * 900000);
-  if (arr.some((a) => a.ticketNo === rn)) {
-    return generateRandomNumber(arr);
-  }
+// export const generateRandomNumber = (arr: any[]): any => {
+//   const rn = Math.floor(100000 + Math.random() * 900000);
+//   if (arr.some((a) => a.ticketNo === rn)) {
+//     return generateRandomNumber(arr);
+//   }
 
-  return rn;
+//   return rn;
+// };
+
+export const generateRandomNumber = () => {
+  return Math.floor(100000 + Math.random() * 900000);
 };
 
 export const getSlicedValue = (value: string, sliceValue = 6) => {

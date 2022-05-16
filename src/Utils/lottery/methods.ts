@@ -17,6 +17,7 @@ export interface ICurrentEvent {
   startTime: number;
   endTime: number;
   eventUserList: IEventUserList[];
+  totalBalance: number;
 }
 
 export const getUserAllowance = async (
@@ -138,7 +139,10 @@ export const getCurrentEventInfo = async (
       lottoAbi,
       signer
     );
+
     const eventInfo = await lottoContract.getCurrentEventInfo();
+    const totalBalance = await lottoContract.totalBalance();
+
     const data = await getEventUserList(
       address,
       provider,
@@ -152,6 +156,7 @@ export const getCurrentEventInfo = async (
         startTime: Number(eventInfo[1].toString()) * 1000,
         endTime: Number(eventInfo[2].toString()) * 1000,
         eventUserList: data,
+        totalBalance: Number(ethers.utils.formatEther(totalBalance.toString())),
       },
     };
   } catch (error) {

@@ -101,43 +101,45 @@
       gap: 1rem;
     }
 
-    > div {
-      display: flex;
-      align-items: center;
-      border: 1px solid #232323;
-      border-radius: 5px;
-
-      .remove_icon {
-        width: 30px;
-        height: 30px;
-        background-color: #fff;
-        position: relative;
-        box-shadow: 0.2px 0.2px 5px rgba(0, 0, 0, 0.1);
-        display: grid;
-        place-items: center;
-        margin-right: 1rem;
+    .lottery_input {
+      div {
+        display: flex;
+        align-items: center;
+        border: 1px solid #232323;
         border-radius: 5px;
-        cursor: pointer;
-      }
 
-      .icon {
-        cursor: pointer;
-        width: 32px;
-        height: 32px;
-
-        svg {
-          width: inherit;
-          height: inherit;
+        .remove_icon {
+          width: 30px;
+          height: 30px;
+          background-color: #fff;
+          position: relative;
+          box-shadow: 0.2px 0.2px 5px rgba(0, 0, 0, 0.1);
+          display: grid;
+          place-items: center;
+          margin-right: 1rem;
+          border-radius: 5px;
+          cursor: pointer;
         }
-      }
 
-      input {
-        background-color: transparent;
-        outline: none;
-        border: none;
-        width: 100%;
-        text-align: center;
-        font-size: 2.5rem;
+        .icon {
+          cursor: pointer;
+          width: 32px;
+          height: 32px;
+
+          svg {
+            width: inherit;
+            height: inherit;
+          }
+        }
+
+        input {
+          background-color: transparent;
+          outline: none;
+          border: none;
+          width: 100%;
+          text-align: center;
+          font-size: 2.5rem;
+        }
       }
     }
   }
@@ -245,10 +247,10 @@
         font-weight: 60;
         margin-bottom: 10px;
       }
-      input {
-        width: 100%;
+      input,
+      .input-group-text {
         background: #ffffff;
-        border: 1px solid rgba(252, 188, 103, 0.5);
+        border: 1px solid #fcbc6780;
         box-sizing: border-box;
         outline: none;
         border-radius: 8px;
@@ -259,12 +261,24 @@
         &:focus {
           outline: 1px solid rgba(252, 188, 103, 0.5);
         }
+        &::placeholder {
+          /* Chrome, Firefox, Opera, Safari 10.1+ */
+          color: #9599ad;
+          opacity: 1; /* Firefox */
+        }
+        &:-ms-input-placeholder {
+          /* Internet Explorer 10-11 */
+          color: #9599ad;
+        }
+        &::-ms-input-placeholder {
+          /* Microsoft Edge */
+          color: #9599ad;
+        }
       }
 
-      &_grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
+      .input-group-text {
+        background-color: #fcbc6780;
+        color: #9599ad;
       }
     }
 

@@ -11,7 +11,7 @@ export const eventsApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${BASE_URL}/events` }),
   endpoints: (builder) => ({
     getEvents: builder.query({
-      query: () => createRequest(`/`),
+      query: ({ account }) => createRequest(`/?account=${account}`),
     }),
     getEventsById: builder.query({
       query: (id) => createRequest(`/${id}`),

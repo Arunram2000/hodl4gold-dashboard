@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
     >
       <footer className="mx">
         <p>2022 © Hold4Gold</p>
-        <p>Powered by Hold4Gold Community</p>
+        <p>Powered by Hold4Gold</p>
       </footer>
     </div>
   );

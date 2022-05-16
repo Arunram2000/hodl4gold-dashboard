@@ -60,9 +60,11 @@ const Farm: React.FC = () => {
         chainId,
         userData.totalStaked
       );
+
       setUserData({
         ...userData,
         rewards,
+        withdrawAmount: userData.withdrawAmount - userData.rewards + rewards,
       });
     }
 
@@ -76,7 +78,6 @@ const Farm: React.FC = () => {
   useEffect(() => {
     if (!library) return;
 
-    console.log(`listening for blocks...`);
     library.on("block", (e) => {
       setBlock(e);
     });
@@ -85,7 +86,6 @@ const Farm: React.FC = () => {
       library.removeAllListeners("block");
     };
   }, [library]);
-
 
   const handleApprove = async () => {
     if (!account) return;
@@ -249,7 +249,7 @@ const Farm: React.FC = () => {
             {new Intl.NumberFormat("en-US", {
               minimumFractionDigits: 0,
               maximumFractionDigits: 8,
-            }).format(userData.rewards)}{" "}
+            }).format(userData.rewards + userData.h4gReward)}{" "}
             H4G
           </h3>
           <section>

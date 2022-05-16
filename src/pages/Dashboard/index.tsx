@@ -1,5 +1,5 @@
 import React from "react";
-import { Footer } from "../../components";
+// import { Footer } from "../../components";
 import Chart from "./Chart";
 
 import "./Dashboard.scss";
@@ -23,14 +23,14 @@ const Dashboard: React.FC = () => {
         <div className="mx pad">
           <div className="dashboard">
             <section className="dashboard-header">
-              <h5>Dashboard</h5>
+              <h5> </h5>
               <p>Dashboard</p>
             </section>
             {renderDashboardContent}
           </div>
         </div>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

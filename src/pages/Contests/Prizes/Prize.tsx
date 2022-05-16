@@ -20,7 +20,7 @@ const Prize: React.FC<PrizeProps> = ({
           <p className="mb-10 mt-10">{description}</p>
           <div className="flex" style={{ justifyContent: "flex-end" }}>
             <b>
-              #{reward_point} prize{reward_point > 1 ? "s" : ""} available
+              Value: {reward_point} Points
             </b>
           </div>
         </div>
