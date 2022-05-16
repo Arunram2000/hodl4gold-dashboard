@@ -183,6 +183,6 @@ export const claimBUSD = async (provider, address: string, chainId: number) => {
     signer
   );
 
-  const tx = h4gstake.claimBusd();
-  return tx.wait();
+  const tx =await h4gstake.claimBusd(address);
+  await tx.wait();
 };
