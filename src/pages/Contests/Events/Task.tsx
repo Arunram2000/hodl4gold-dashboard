@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useWeb3React } from "@web3-react/core";
+import Countdown, { CountdownRenderProps } from "react-countdown";
 
 import twitter from "../../../assets/images/twitter.png";
 import discord from "../../../assets/images/discord.png";
@@ -18,6 +19,8 @@ import {
   verifyTweetsApi,
 } from "../../../api/denApi";
 import { DenUserContext } from "../../../store/context/DenUserContext";
+
+const MILLISECONDS = 24 * 60 * 60 * 1000;
 
 const getLinkText = (type, ref_id) => {
   if (type === "like" || type === "retweet")
@@ -47,6 +50,8 @@ const Task = ({
   participants,
   eventId,
   media,
+  repeat_duration,
+  repeatable_task,
 }) => {
   const { account } = useWeb3React();
   const { setUserData, userData } = useContext(DenUserContext);
@@ -54,7 +59,7 @@ const Task = ({
   const [openForm, setOpenForm] = useState(false);
   const [error, setError] = useState("");
   const [isHeParticipated, setIsHeParticipated] = useState(
-    participants.some(
+    participants.find(
       (participant) =>
         participant.task_id === _id &&
         participant.account === account?.toLocaleLowerCase()
@@ -160,13 +165,13 @@ const Task = ({
   const handleTweet = async () => {
     try {
       setLoading(true);
-      const hashTag = ref_id.replace("#", "");
 
       const { data } = await verifyTweetsApi(eventId, {
         task_id: _id,
         account: account,
         username: userData?.username,
-        task: hashTag,
+        task: encodeURIComponent(ref_id),
+        duration: repeat_duration,
       });
 
       console.log(data);
@@ -177,7 +182,11 @@ const Task = ({
         return;
       }
 
-      setIsHeParticipated(true);
+      await refetch();
+      setIsHeParticipated({
+        ...isHeParticipated,
+        nextAt: new Date(Date.now() + MILLISECONDS / repeat_duration),
+      });
       setOpenForm(false);
       await refetchUserData();
     } catch (error) {
@@ -267,31 +276,93 @@ const Task = ({
     return userData?.username;
   };
 
-  return (
-    <motion.div layout className="task_card">
-      <motion.div
-        layout
-        className="task_card-content"
-        onClick={isHeParticipated ? undefined : () => setOpenForm((f) => !f)}
-      >
-        <div className="task_card-content_left">
-          <img src={getIcon(media)} alt="social icon" />
-          <div>
-            <h5 className="mb-5">{title}</h5>
-            <p>{description}</p>
-          </div>
+  const renderer = ({
+    completed,
+    hours,
+    minutes,
+    seconds,
+  }: CountdownRenderProps) => {
+    if (completed) {
+      return <b>+{reward_point} points</b>;
+    } else {
+      return (
+        <b style={{ fontSize: "14px" }}>
+          {hours}h : {minutes}m : {seconds}s
+        </b>
+      );
+    }
+  };
+
+  const renderTaskHeader = (
+    <>
+      <div className="task_card-content_left">
+        <img src={getIcon(media)} alt="social icon" />
+        <div>
+          <h5 className="mb-6">{title}</h5>
+          <p>{description}</p>
         </div>
-        <div className="task_card-content_right">
-          {isHeParticipated ? (
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <img src={checkIcon} alt="check icon" className="icon mr-10" />
-              {/* <p>Thanks for completing this task</p> */}
-            </div>
+      </div>
+      <div className="task_card-content_right">
+        {!!repeatable_task ? (
+          isHeParticipated ? (
+            <Countdown date={isHeParticipated.nextAt} renderer={renderer} />
           ) : (
             <b>+{reward_point} points</b>
-          )}
-        </div>
-      </motion.div>
+          )
+        ) : isHeParticipated ? (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <img src={checkIcon} alt="check icon" className="icon mr-10" />
+          </div>
+        ) : (
+          <b>+{reward_point} points</b>
+        )}
+      </div>
+    </>
+  );
+
+  const timerRenderer = ({ completed }: CountdownRenderProps) => {
+    if (completed) {
+      return (
+        <motion.div
+          layout
+          className="task_card-content"
+          onClick={() => setOpenForm((f) => !f)}
+        >
+          {renderTaskHeader}
+        </motion.div>
+      );
+    } else {
+      return (
+        <motion.div layout className="task_card-content">
+          {renderTaskHeader}
+        </motion.div>
+      );
+    }
+  };
+
+  return (
+    <motion.div layout className="task_card">
+      {repeatable_task ? (
+        isHeParticipated ? (
+          <Countdown date={isHeParticipated.nextAt} renderer={timerRenderer} />
+        ) : (
+          <motion.div
+            layout
+            className="task_card-content"
+            onClick={() => setOpenForm((f) => !f)}
+          >
+            {renderTaskHeader}
+          </motion.div>
+        )
+      ) : (
+        <motion.div
+          layout
+          className="task_card-content"
+          onClick={isHeParticipated ? undefined : () => setOpenForm((f) => !f)}
+        >
+          {renderTaskHeader}
+        </motion.div>
+      )}
       <AnimatePresence>
         {openForm && (
           <motion.div layout className="p-30">

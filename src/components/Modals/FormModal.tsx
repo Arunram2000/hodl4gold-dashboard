@@ -92,11 +92,11 @@ const FormModal: React.FC<IFormMdal> = ({ refetch, modal }) => {
           >
             <h3>Getting to know you better</h3>
             <p className="mb-5 mt-10">
-              This is a irreversible process. So kindly give the information
-              correctly.
+              Please submit your user info carefully, you will not be able to
+              change your socials once set.
             </p>
-            <p className="mb-20 text-warning">
-              *All the fields are case sensitive.
+            <p className="mb-20 alert alert-warning">
+              *All fields are case-sensitive.
             </p>
             {error && (
               <p style={{ fontSize: 12, color: "tomato", textAlign: "center" }}>
@@ -105,15 +105,19 @@ const FormModal: React.FC<IFormMdal> = ({ refetch, modal }) => {
             )}
             <form onSubmit={handleSubmit}>
               <div className="form_input">
-                <label htmlFor="username">Twitter username</label>
-                <input
-                  type="text"
-                  name="username"
-                  placeholder="@username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  required
-                />
+                <label htmlFor="username">Twitter</label>
+                <div className="input-group">
+                  <div className="input-group-text">@</div>
+                  <input
+                    type="text"
+                    name="username"
+                    placeholder="ex: hodl4gold"
+                    value={formData.username}
+                    onChange={handleChange}
+                    className="form-control"
+                    required
+                  />
+                </div>
                 {formData.username && (
                   <a
                     href={getLink(formData.username)}
@@ -121,59 +125,84 @@ const FormModal: React.FC<IFormMdal> = ({ refetch, modal }) => {
                     rel="noopener noreferrer"
                     style={{ fontSize: "12px", color: "#fcbc67" }}
                   >
-                    Click here to see your profile.If it's not then type your
+                    Click here to see your profile. If it's not then type your
                     twitter username correctly
                   </a>
                 )}
               </div>
+
               <div className="form_input">
-                <label htmlFor="discord_username">Discord username</label>
-                <input
-                  type="text"
-                  name="discord_username"
-                  placeholder="@discord_username"
-                  value={formData.discord_username}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form_input">
-                <label htmlFor="discord_username">Instagram username</label>
-                <input
-                  type="text"
-                  name="instagram_username"
-                  placeholder="@instagram_username"
-                  value={formData.instagram_username}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form_input">
-                <label htmlFor="discord_username">Telegram username</label>
-                <div className="form_input_grid">
+                <label htmlFor="discord_username">Discord</label>
+                <div className="input-group">
+                  <div className="input-group-text">@</div>
                   <input
                     type="text"
-                    name="telegram_firstname"
-                    placeholder="@first_name"
-                    value={formData.telegram_firstname}
+                    name="discord_username"
+                    placeholder="ex: hodl4gold#7708"
+                    value={formData.discord_username}
                     onChange={handleChange}
+                    className="form-control"
                     required
-                  />
-                  <input
-                    type="text"
-                    name="telegram_lastname"
-                    placeholder="@last_name"
-                    value={formData.telegram_lastname}
-                    onChange={handleChange}
                   />
                 </div>
               </div>
-              {/* <input type="email" placeholder="Email address" required /> */}
+
+              <div className="form_input">
+                <label htmlFor="discord_username">Instagram</label>
+                <div className="input-group">
+                  <div className="input-group-text">@</div>
+                  <input
+                    type="text"
+                    name="instagram_username"
+                    placeholder="ex: hodl4gold"
+                    value={formData.instagram_username}
+                    onChange={handleChange}
+                    className="form-control"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form_input mb-4">
+                <label htmlFor="discord_username">Telegram</label>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: 10,
+                  }}
+                >
+                  <div className="input-group">
+                    <div className="input-group-text">@</div>
+                    <input
+                      type="text"
+                      name="telegram_firstname"
+                      placeholder="firstname"
+                      value={formData.telegram_firstname}
+                      onChange={handleChange}
+                      required
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="input-group">
+                    <div className="input-group-text">@</div>
+                    <input
+                      type="text"
+                      name="telegram_firstname"
+                      placeholder="lastname"
+                      value={formData.telegram_lastname}
+                      onChange={handleChange}
+                      className="form-control"
+                    />
+                  </div>
+                </div>
+              </div>
+
               <Button variant="secondary" disabled={loading}>
-                Continue to the Den
+                Continue to Contests
               </Button>
             </form>
-            <p className="modal_footer-links">
+            {/* <p className="modal_footer-links">
               By continuing, you agree to all{" "}
               <a href="/" target="_blank" rel="noopener noreferrer">
                 Terms & Conditions
@@ -183,7 +212,7 @@ const FormModal: React.FC<IFormMdal> = ({ refetch, modal }) => {
                 Privacy Policy
               </a>
               .
-            </p>
+            </p> */}
           </motion.div>
         )}
       </AnimatePresence>

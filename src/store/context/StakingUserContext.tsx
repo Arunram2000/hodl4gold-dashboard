@@ -21,6 +21,7 @@ interface IUser {
   totalStaked: number;
   isAllowanceApproved: boolean;
   busdReward: number;
+  h4gReward: number;
   withdrawAmount: number;
   withdrawFee: number;
 }
@@ -40,6 +41,7 @@ export const StakingUserContext = createContext<IStakingUserContext>({
     totalStaked: 0,
     isAllowanceApproved: false,
     busdReward: 0,
+    h4gReward: 0,
     withdrawAmount: 0,
     withdrawFee: 0,
   },
@@ -59,6 +61,7 @@ const StakingUserContextProvider: React.FC<{ children: ReactNode }> = ({
     totalStaked: 0,
     isAllowanceApproved: false,
     busdReward: 0,
+    h4gReward: 0,
     withdrawAmount: 0,
     withdrawFee: 0,
   });
@@ -75,7 +78,7 @@ const StakingUserContextProvider: React.FC<{ children: ReactNode }> = ({
           account,
           chainId
         );
-        const { totalStaked, busdReward } = await getUserDetails(
+        const { totalStaked, busdReward, h4gReward } = await getUserDetails(
           provider,
           account,
           chainId
@@ -99,7 +102,8 @@ const StakingUserContextProvider: React.FC<{ children: ReactNode }> = ({
           rewards,
           totalStaked,
           busdReward,
-          withdrawAmount,
+          h4gReward,
+          withdrawAmount: withdrawAmount + h4gReward,
           withdrawFee,
         });
         setIsLoading(false);

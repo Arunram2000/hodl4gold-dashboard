@@ -9,6 +9,8 @@ import { getTotalSupply } from "../../Utils/getCirculatingSupply";
 import { totalDividendDistributed } from "../../Utils/getTotalRewardsDistributed";
 import { getBurnedh4g } from "../../Utils/getBurnedh4g";
 import { realworldUint } from "../../Utils/toRealWorldAmount";
+import { getHoldings } from "../../Utils/getHolding"
+import { getPrice } from "../../Utils/getH4GPrice";
 
 type ITokenStatsCardProps = {
   title: string;
@@ -46,6 +48,32 @@ const TokenStats: React.FC = () => {
   const [totalSupply, setTotalSupply] = useState("0");
   const [distributed, setDistributed] = useState("0");
   const [totalBurns, setts] = useState("0");
+  const [totalRewardSupply, setTotalRewardSupply] = useState("0");
+  const [lpHoldings, setlpHoldings] = useState("0");
+  const [tS, setTs] = useState(0)
+  const [ecoWallet, setEcoWallet] = useState("0")
+  const [price, setPrice] = useState("");
+  const [marketCap, setMarketcap] = useState("")
+
+  // Fetch H4G Holding in the LP Pair
+  useEffect(() => {
+    const account= "0x6E61B564969dBC838A14d5Db0AfE2A082620a284"
+    if (account) {
+      Promise.resolve(getHoldings(account)).then((holds) => {
+        setlpHoldings(holds);
+      });
+    }
+  }, []);
+
+  // Fetch H4G Holding in Eco Wallet
+  useEffect(() => {
+    const account= "0xD1C88209112d1A43288E49287699C2A83Bf47b48"
+    if (account) {
+      Promise.resolve(getHoldings(account)).then((eco) => {
+        setEcoWallet(eco);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     Promise.resolve(totalTokenHolders()).then((holders) => setholders(holders));
@@ -55,11 +83,32 @@ const TokenStats: React.FC = () => {
 
       setts(realworldUint(totalBurns));
       setTotalSupply(realworldUint(ts));
+      setTs(ts)
     });
-    Promise.resolve(totalDividendDistributed()).then((dis) =>
-      setDistributed(dis)
-    );
+    Promise.resolve(totalDividendDistributed()).then((dis) => {
+      const mandis = "209000";
+      const totaldis = Number(dis) + Number(mandis);
+      setDistributed(realworldUint(totaldis.toString()));
+    });
   }, []);
+
+  useEffect(() => {
+    if (tS && lpHoldings && ecoWallet) {
+      Promise.resolve(tS - Number(lpHoldings) - Number(ecoWallet)).then((totalRewardSupply) => {
+        setTotalRewardSupply(realworldUint(totalRewardSupply));
+      });
+    }
+  });
+
+  useEffect(() => {
+    if (tS) {
+      Promise.resolve(getPrice()).then((price) => setPrice(price));
+      Promise.resolve(tS * Number(price)).then((totalMarketCap) => {
+        setMarketcap(realworldUint(totalMarketCap));
+      });
+    }
+  });
+  
   return (
     <div className="token_stats">
       {/* <div className="token_controls">
@@ -78,7 +127,7 @@ const TokenStats: React.FC = () => {
       </div> */}
       <div className="token_wrapper">
         <TokenStatsCard
-          title="Total Holders"
+          title="Eligible Rewards Holders"
           icon={holders}
           value={totalHolds}
           // label={{
@@ -90,6 +139,24 @@ const TokenStats: React.FC = () => {
           title="Total Circulating Supply"
           icon={supply}
           value={totalSupply}
+          // label={{
+          //   value: "16.24",
+          //   trade: "inc",
+          // }}
+        />
+        <TokenStatsCard
+          title="Total MarketCap"
+          icon={supply}
+          value={marketCap}
+          // label={{
+          //   value: "16.24",
+          //   trade: "inc",
+          // }}
+        />
+        <TokenStatsCard
+          title="Total Rewards Supply"
+          icon={supply}
+          value={totalRewardSupply}
           // label={{
           //   value: "16.24",
           //   trade: "inc",

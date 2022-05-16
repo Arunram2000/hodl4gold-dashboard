@@ -61,7 +61,7 @@ const Event: React.FC<IEventProps> = ({
   const renderLeaderboard = (
     <div>
       <h4 className="mb-15"> Event Leaderboard</h4>
-      {!getUserRewards(participants, tasks).length ? (
+      {!getUserRewards(participants).length ? (
         <div className="no_participants">
           <p>No participants yet</p>
         </div>
@@ -71,16 +71,14 @@ const Event: React.FC<IEventProps> = ({
             <p>Wallet address</p>
             <p>Points</p>
           </div>
-          {getUserRewards(participants, tasks).map(
-            ({ address, reward }, index) => (
-              <div key={index.toString()} className="participants_list-card">
-                <p>{`${address?.slice(0, 6)}...${address?.slice(
-                  address?.length - 6
-                )}`}</p>
-                <b>{reward}</b>
-              </div>
-            )
-          )}
+          {getUserRewards(participants).map(({ address, reward }, index) => (
+            <div key={index.toString()} className="participants_list-card">
+              <p>{`${address?.slice(0, 6)}...${address?.slice(
+                address?.length - 6
+              )}`}</p>
+              <b>{reward}</b>
+            </div>
+          ))}
         </div>
       )}
       <div className="mt-20" data-position="end">

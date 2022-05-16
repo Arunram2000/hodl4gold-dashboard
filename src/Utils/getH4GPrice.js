@@ -49,5 +49,6 @@ export const getPrice = async () => {
 
   console.log(Number(trade.executionPrice.toSignificant(2)) * 10 ** 5);
 
-  return String(Number(route.midPrice.toSignificant(9)) * 10 ** 5);
+  //return String(Number(route.midPrice.toSignificant(14)) * 10 ** 5);
+  return route.midPrice.toSignificant(14);
 };

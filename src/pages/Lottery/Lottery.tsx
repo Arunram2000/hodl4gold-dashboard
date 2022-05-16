@@ -16,6 +16,7 @@ import Title from "../../components/Icons/Title";
 import token from "../../assets/logo/token.png";
 import { Button } from "../../components";
 import { LotteryUserContext } from "../../store/context/LotteryUserContext";
+import RewardTable from "./RewardTable";
 
 const Lottery: React.FC = () => {
   const [modal, setModal] = useState(false);
@@ -27,10 +28,12 @@ const Lottery: React.FC = () => {
   const { isAllowanceApproved, tokenBalance, refetch } =
     useContext(LotteryUserContext);
   const [ticketFee, setTicketFee] = useState(0);
+  const [loading, setIsLoading] = useState(false);
 
   const handleGetEventData = useCallback(async () => {
     if (account) {
       try {
+        setIsLoading(true);
         const eventInfo = await getCurrentEventInfo(
           account,
           library?.provider,
@@ -45,6 +48,8 @@ const Lottery: React.FC = () => {
         setTicketFee(ticketfee);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -167,6 +172,16 @@ const Lottery: React.FC = () => {
         <div className={"content"}>
           <div>
             <h3>Hodl4Gold Lottery Live Stream</h3>
+            <h2>
+              Total Prize Pool{" "}
+              {currentEventInfo?.totalBalance
+                ? new Intl.NumberFormat("en-US", {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2,
+                  }).format(currentEventInfo.totalBalance)
+                : 0}
+              &nbsp;BUSD
+            </h2>
             <h4>
               Ticket price&nbsp;
               {new Intl.NumberFormat("en-US", {
@@ -183,21 +198,23 @@ const Lottery: React.FC = () => {
             />
           )}
           {!isAllowanceApproved ? (
-            <Button onClick={() => handleApprove()}>Approve</Button>
+            <Button disabled={loading} onClick={() => handleApprove()}>
+              Approve
+            </Button>
           ) : (
             <Button onClick={() => setModal(true)}>Purchase a Ticket</Button>
           )}
+          <RewardTable
+            totalPrizePool={
+              currentEventInfo ? currentEventInfo.totalBalance : undefined
+            }
+          />
         </div>
       </div>
       <LotteryModal
         modal={modal}
         handleClose={() => setModal(false)}
         handleBuyTicket={handleBuyTicket}
-        numbersList={
-          currentEventInfo?.eventUserList
-            ? currentEventInfo.eventUserList.map((e) => e.randomNumber)
-            : []
-        }
       />
     </>
   );

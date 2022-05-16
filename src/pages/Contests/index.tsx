@@ -10,6 +10,7 @@ import DenUserContextProvider, {
 
 import { ReactComponent as UserIcon } from "../../assets/icons/user.svg";
 import DenAccount from "../../components/Modals/DenAccountModal";
+import { useWeb3React } from "@web3-react/core";
 
 const tabs = [
   {
@@ -42,7 +43,7 @@ const User = () => {
           <h5>@{userData?.username}</h5>
         </div>
         <p>
-          <b>{userData?.rewards}</b> HODL
+          <b>{userData?.rewards}</b> Points
         </p>
       </div>
       <DenAccount modal={modal} handleClose={() => setModal(false)} />
@@ -52,6 +53,7 @@ const User = () => {
 
 const Den: React.FC = () => {
   const [activeTab, setActiveTab] = useState(1);
+  const { account } = useWeb3React();
 
   return (
     <DenUserContextProvider>
@@ -69,7 +71,7 @@ const Den: React.FC = () => {
           ))}
         </div>
         <div className="tabs-content">
-          {activeTab === 1 && <Events />}
+          {activeTab === 1 && <Events account={account} />}
           {activeTab === 2 && <Leaderboard />}
           {activeTab === 3 && <Prizes />}
         </div>

@@ -21,6 +21,8 @@ export interface IDenEventTasks {
   media_link: string;
   task_type: "follow" | "like" | "retweet" | "join";
   _id: string;
+  repeat_duration: number;
+  repeatable_task: boolean;
 }
 
 export interface IDenEventParticipants {
@@ -29,6 +31,7 @@ export interface IDenEventParticipants {
   username: string;
   createdAt: string;
   _id: string;
+  nextAt: string;
 }
 
 export interface IDenEvents {

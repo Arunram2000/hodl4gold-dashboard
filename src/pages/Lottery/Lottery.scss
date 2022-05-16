@@ -165,3 +165,29 @@
     }
   }
 }
+
+.lottery_reward_table {
+  max-width: 560px;
+  width: 100%;
+  margin: 0 auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+      background-color: rgba(0, 96, 57, 1);
+      color: #fff;
+    }
+
+    th,
+    td {
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      padding: 0.5rem;
+    }
+
+    tr:nth-child(odd) {
+      background-color: rgba(17, 209, 183, 0.1);
+    }
+  }
+}

@@ -75,10 +75,15 @@ export const getUserDetails = async (
     "gwei"
   );
   const formatBusdReward = ethers.utils.formatEther(userDetails[3].toString());
+  const formatH4gReward = ethers.utils.formatUnits(
+    userDetails[4].toString(),
+    "gwei"
+  );
 
   return {
     totalStaked: Number(formatTotalStaked),
     busdReward: Number(formatBusdReward),
+    h4gReward: formatH4gReward ? Number(formatH4gReward) : 0,
   };
 };
 

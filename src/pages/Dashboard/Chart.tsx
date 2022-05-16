@@ -49,7 +49,7 @@ const Chart: React.FC = () => {
       <div className="chart-header">
         <h4>Burn History</h4>
         <section>
-          <h5>TIMEFRAME :</h5>{" "}
+          {/* <h5>TIMEFRAME :</h5>{" "} */}
           <div
             className="timeframe_dropdown"
             onMouseEnter={() => setIsActive(true)}
@@ -84,7 +84,7 @@ const Chart: React.FC = () => {
         </section>
       </div>
       <div className="chart-content">
-        <ResponsiveContainer width={"100%"} height={180}>
+        <ResponsiveContainer width={"100%"} height={300}>
           <AreaChart
             data={chartData}
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
