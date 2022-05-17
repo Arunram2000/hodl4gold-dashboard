@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Provider as ReduxProvider } from "react-redux";
 import { Web3Provider } from "@ethersproject/providers";
@@ -17,13 +17,13 @@ function getLibrary(provider: any) {
 ReactDOM.render(
   <React.StrictMode>
     <Web3ReactProvider getLibrary={getLibrary}>
-      <BrowserRouter>
+      <HashRouter>
         <ReduxProvider store={store}>
           <Provider>
             <App />
           </Provider>
         </ReduxProvider>
-      </BrowserRouter>
+      </HashRouter>
     </Web3ReactProvider>
   </React.StrictMode>,
   document.getElementById("root")
