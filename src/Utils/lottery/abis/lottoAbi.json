@@ -311,6 +311,45 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "getEventInfo",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "eventid",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "starttime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "endtime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "userIndex",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "uint256",
+				"name": "winningno",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
 				"name": "_id",
 				"type": "uint256"
 			}
