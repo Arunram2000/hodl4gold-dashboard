@@ -34,22 +34,6 @@ const LotteryModal: React.FC<LotteryModal> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useMemo(() => {
-  //   if (lotteryNumber.length > 6) return setError("maximun 6 digit is allowed");
-  //   if (lotteryNumber.length > 0) {
-  //     if (lotteryNumber.startsWith("0"))
-  //       return setError("number must not starts with 0");
-  //     if (numbersList.includes(lotteryNumber))
-  //       return setError(
-  //         "This number is already taken .choose a different a one"
-  //       );
-  //     if (lotteryNumber.length < 6) return setError("number should be 6 digit");
-  //   }
-  //   return setError(undefined);
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [lotteryNumber]);
-
   const handleRefresh = (index: number) => {
     const list = [...lotteryList];
     list[index] = String(generateRandomNumber());
@@ -64,7 +48,7 @@ const LotteryModal: React.FC<LotteryModal> = ({
 
   const handleLotterInput = (value: string, index: number) => {
     if (value.length > 6) return;
-    if (!/^[0-9]+$/.test(value)) return;
+    if (value.length && !/^[0-9]+$/.test(value)) return;
 
     if (value.length < 6) {
       error[index] = "random number must be 6 digit";

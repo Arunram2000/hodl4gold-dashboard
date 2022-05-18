@@ -17,6 +17,8 @@ import token from "../../assets/logo/token.png";
 import { Button } from "../../components";
 import { LotteryUserContext } from "../../store/context/LotteryUserContext";
 import RewardTable from "./RewardTable";
+import Buyers from "./Buyers";
+import LatestWin from "./LatestWin";
 
 const Lottery: React.FC = () => {
   const [modal, setModal] = useState(false);
@@ -209,8 +211,14 @@ const Lottery: React.FC = () => {
               currentEventInfo ? currentEventInfo.totalBalance : undefined
             }
           />
+          {currentEventInfo?.latestEvents && (
+            <LatestWin latestEvents={currentEventInfo.latestEvents} />
+          )}
         </div>
       </div>
+      {currentEventInfo?.eventUserList && (
+        <Buyers currentEventInfo={currentEventInfo.eventUserList} />
+      )}
       <LotteryModal
         modal={modal}
         handleClose={() => setModal(false)}

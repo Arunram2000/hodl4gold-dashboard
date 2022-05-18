@@ -1,40 +1,49 @@
 import { useWeb3React } from "@web3-react/core";
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { FingerPrint } from "../../components/Icons";
 import { getSlicedValue } from "../../Utils/lottery/helpers";
-import {
-  getCurrentEventInfo,
-  IEventUserList,
-} from "../../Utils/lottery/methods";
+import { IEventUserList } from "../../Utils/lottery/methods";
 
-const Buyers: React.FC = () => {
-  const { account, library, chainId } = useWeb3React();
-  const [currentEventInfo, setCurrentEventInfo] = useState<IEventUserList[]>(
-    []
+const Buyers: React.FC<{ currentEventInfo: IEventUserList[] }> = ({
+  currentEventInfo,
+}) => {
+  const { account } = useWeb3React();
+  const userPurchases = currentEventInfo.filter(
+    (f) => f.user.toLocaleLowerCase() === account.toLocaleLowerCase()
   );
 
-  const handleGetEventData = useCallback(async () => {
-    if (account) {
-      try {
-        const eventInfo = await getCurrentEventInfo(
-          account,
-          library?.provider,
-          chainId
-        );
-        if (eventInfo) setCurrentEventInfo(eventInfo.data.eventUserList);
-      } catch (error) {
-        console.log(error);
-      }
-    }
+  const renderUserTickets = (
+    <section className={"leaderboard"}>
+      <h3 className="mb-30 text-center">Your recent purchases </h3>
+      {!userPurchases.length ? (
+        <div>
+          <h5 style={{ textAlign: "center" }}>No purchases yet</h5>
+        </div>
+      ) : (
+        <div className={"leaderboardWrapper"}>
+          {userPurchases.slice(0, 20).map((val, i) => (
+            <div key={i.toString()} className={"buyers_card"}>
+              <div className={"buyers_card_details"}>
+                <FingerPrint />
+                <div>
+                  <p>
+                    [{i + 1}] - {getSlicedValue(val.user)}
+                  </p>
+                  <span> Wallet address</span>
+                </div>
+              </div>
+              <div className={"buyers_card_transfers"}>
+                <p>{val.randomNumber}</p>
+                <span>Number</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+  );
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, chainId]);
-
-  useEffect(() => {
-    handleGetEventData();
-  }, [handleGetEventData]);
-
-  return (
+  const renderRecentBuyers = (
     <section className={"leaderboard"}>
       <h3 className="mb-30 text-center">Recent Buyers </h3>
       {!currentEventInfo.length ? (
@@ -44,8 +53,8 @@ const Buyers: React.FC = () => {
       ) : (
         <div className={"leaderboardWrapper"}>
           {currentEventInfo.slice(0, 20).map((val, i) => (
-            <div key={i.toString()} className={"leaderboardWrapper_card"}>
-              <div className={"leaderboardWrapper_card_details"}>
+            <div key={i.toString()} className={"buyers_card"}>
+              <div className={"buyers_card_details"}>
                 <FingerPrint />
                 <div>
                   <p>
@@ -54,7 +63,7 @@ const Buyers: React.FC = () => {
                   <span> Wallet address</span>
                 </div>
               </div>
-              <div className={"leaderboardWrapper_card_transfers"}>
+              <div className={"buyers_card_transfers"}>
                 <p>{val.randomNumber}</p>
                 <span>Number</span>
               </div>
@@ -63,6 +72,13 @@ const Buyers: React.FC = () => {
         </div>
       )}
     </section>
+  );
+
+  return (
+    <div className="leaderboard_grid">
+      {renderRecentBuyers}
+      {renderUserTickets}
+    </div>
   );
 };
 
