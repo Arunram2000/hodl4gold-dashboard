@@ -18,6 +18,19 @@ export interface ICurrentEvent {
   endTime: number;
   eventUserList: IEventUserList[];
   totalBalance: number;
+  latestEvents: {
+    eventId: any;
+    startTime: number;
+    endTime: number;
+    winningNumber: number;
+  }[];
+}
+
+export interface IEventInfo {
+  eventId: string;
+  startTime: number;
+  endTime: number;
+  winningNumber: number;
 }
 
 export const getUserAllowance = async (
@@ -85,6 +98,7 @@ export const buyTicket = async (
     await tx.wait();
 
     await sleep();
+    window.location.reload();
     return {
       data: await getCurrentEventInfo(address, provider, chainId),
     };
@@ -117,13 +131,71 @@ export const getEventUserList = async (
     return {
       user: userList.user.toString(),
       randomNumber: userList.randomno.toString(),
-      amount: ethers.utils
-        .formatUnits(userList.amount.toString(), "gwei")
-        .toString(),
+      amount: ethers.utils.formatEther(userList.amount.toString()).toString(),
     };
   });
 
   return data;
+};
+
+export const getEventInfo = async (
+  address: string,
+  provider: any,
+  chainId: number,
+  eventId: string
+) => {
+  const etherProvider = new ethers.providers.Web3Provider(provider);
+  const signer = etherProvider.getSigner(address);
+  const lottoContract = new ethers.Contract(
+    LOTTO_ADDRESS[chainId],
+    lottoAbi,
+    signer
+  );
+
+  const eventInfo = await lottoContract.getEventInfo(eventId);
+
+  return {
+    eventId: eventInfo[0].toString(),
+    startTime: Number(eventInfo[1].toString()) * 1000,
+    endTime: Number(eventInfo[2].toString()) * 1000,
+    winningNumber: Number(eventInfo[4].toString()),
+  };
+};
+
+export const getLastestEventInfo = async (
+  address: string,
+  provider: any,
+  chainId: number,
+  currentEventId: number
+) => {
+  let eventInfoLists: IEventInfo[] = [];
+  let eventIds: number[] = [];
+
+  if (currentEventId < 5) {
+    for (let i = 0; i < currentEventId; i++) {
+      eventIds.push(i);
+    }
+    eventInfoLists = await Promise.all(
+      eventIds.map(async (_, index) => {
+        return await getEventInfo(address, provider, chainId, String(index));
+      })
+    );
+
+    return eventInfoLists;
+  }
+
+  const lastEvent = currentEventId - 1;
+  const startingEvent = lastEvent - 5;
+
+  for (let i = startingEvent; i <= lastEvent; i++) {
+    eventIds.push(i);
+  }
+
+  return await Promise.all(
+    eventIds.map(async (id) =>
+      getEventInfo(address, provider, chainId, String(id))
+    )
+  );
 };
 
 export const getCurrentEventInfo = async (
@@ -150,13 +222,23 @@ export const getCurrentEventInfo = async (
       eventInfo[0].toString()
     );
 
+    const currentEventId = Number(eventInfo[0].toString());
+
+    const latestEvents = await getLastestEventInfo(
+      address,
+      provider,
+      chainId,
+      currentEventId
+    );
+
     return {
       data: {
         eventId: eventInfo[0].toString(),
         startTime: Number(eventInfo[1].toString()) * 1000,
         endTime: Number(eventInfo[2].toString()) * 1000,
-        eventUserList: data,
+        eventUserList: data.reverse(),
         totalBalance: Number(ethers.utils.formatEther(totalBalance.toString())),
+        latestEvents,
       },
     };
   } catch (error) {
@@ -180,19 +262,26 @@ export const getRecentWinners = async (
   const currentEventId = Number(eventInfo[0].toString());
 
   if (currentEventId === 0) {
-    return [];
+    return {
+      winningNumber: 0,
+      winnersList: [],
+    };
   }
 
-  const data = await getEventUserList(
-    address,
-    provider,
-    chainId,
-    String(currentEventId - 1)
-  );
+  const eventId = String(currentEventId - 1);
+
+  const eventData = await getEventInfo(address, provider, chainId, eventId);
+
+  const data = await getEventUserList(address, provider, chainId, eventId);
 
   const filteredData = data.filter((f) => Number(f.amount) !== 0);
 
-  return [...filteredData.sort((a, b) => Number(b.amount) - Number(a.amount))];
+  return {
+    winningNumber: eventData.winningNumber,
+    winnersList: [
+      ...filteredData.sort((a, b) => Number(b.amount) - Number(a.amount)),
+    ],
+  };
 };
 
 export const getTicketFee = async (

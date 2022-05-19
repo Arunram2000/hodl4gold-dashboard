@@ -4,7 +4,6 @@ import "./Lottery.scss";
 
 import Lottery from "./Lottery";
 import Leaderboard from "./Leaderboard";
-import Buyers from "./Buyers";
 import LotteryUserContextProvider from "../../store/context/LotteryUserContext";
 
 const Home: React.FC = () => {
@@ -15,7 +14,6 @@ const Home: React.FC = () => {
           <div className={"homeWrapper"}>
             <Lottery />
           </div>
-          <Buyers />
           <div className="mb-30"></div>
           <Leaderboard />
         </section>

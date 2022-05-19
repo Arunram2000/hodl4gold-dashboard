@@ -28,7 +28,7 @@ const RewardTable: React.FC<IRewardsTabel> = ({ totalPrizePool }) => {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 4,
                       }).format((amt.value / 100) * totalPrizePool)
-                    : ""}
+                    : 0}
                 </td>
               </tr>
             );

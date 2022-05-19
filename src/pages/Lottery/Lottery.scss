@@ -112,28 +112,89 @@
     }
   }
 
+  .leaderboard_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+  }
+
   .leaderboard {
+    margin: unset;
+    max-width: unset;
     background: #ffffff;
     box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     padding: 2rem 2rem 3rem;
+    height: max-content;
 
     .leaderboardWrapper {
       display: flex;
       flex-direction: column;
       gap: 2rem;
+      overflow-x: auto;
+      width: 100%;
 
-      &_card {
+      .buyers_card {
         background: rgba(17, 209, 183, 0.2);
         border-radius: 5px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 1.5rem;
+        gap: 2rem;
         padding: 1rem 3rem;
 
-        @media (max-width: 576px) {
+        p {
+          font-weight: 400;
+          font-size: 1.6rem;
+          line-height: 2.4rem;
+          color: #495057;
+        }
+
+        span {
+          font-weight: 400;
+          font-size: 1.2rem;
+          line-height: 1.8rem;
+          color: #495057;
+        }
+
+        &_details {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+        &_transfers {
+          display: flex;
           flex-direction: column;
+          align-items: flex-end;
+        }
+      }
+
+      table {
+        border-collapse: separate;
+        border-spacing: 0 1em;
+      }
+
+      &_card {
+        background: rgba(17, 209, 183, 0.2);
+        border-radius: 5px;
+
+        td {
+          padding: 1rem 3rem;
+        }
+
+        td:nth-child(1) {
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
+        }
+
+        td:last-child {
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
         }
 
         p {
@@ -167,6 +228,32 @@
 }
 
 .lottery_reward_table {
+  max-width: 560px;
+  width: 100%;
+  margin: 0 auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+      background-color: rgba(0, 96, 57, 1);
+      color: #fff;
+    }
+
+    th,
+    td {
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      padding: 0.5rem;
+    }
+
+    tr:nth-child(odd) {
+      background-color: rgba(17, 209, 183, 0.1);
+    }
+  }
+}
+
+.latestWin_list {
   max-width: 560px;
   width: 100%;
   margin: 0 auto;
