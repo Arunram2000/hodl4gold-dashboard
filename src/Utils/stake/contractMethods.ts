@@ -78,7 +78,12 @@ export const setStake = async (
   );
 
   const parseEther = ethers.utils.parseUnits(amount, "gwei").toString();
-  const tx = await h4gstake.stake(parseEther);
+  const estimateGas = await h4gstake.estimateGas.stake(
+    amount.toString(),
+   );
+  const tx = await h4gstake.stake(parseEther,{
+    gasLimit: estimateGas,
+  });
   await tx.wait();
 };
 
@@ -169,8 +174,10 @@ export const withdraw = async (provider, address: string, chainId: number) => {
     stakeabi,
     signer
   );
-
-  const tx = await h4gstake.withdraw();
+  const estimateGas = await h4gstake.estimateGas.withdraw();
+  const tx = await h4gstake.withdraw({
+    gasLimit: estimateGas,
+  });
   await tx.wait();
 };
 
