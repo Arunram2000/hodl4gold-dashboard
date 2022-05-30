@@ -78,7 +78,7 @@ export const setStake = async (
   );
 
   const parseEther = ethers.utils.parseUnits(amount, "gwei").toString();
-  const estimateGas = await h4gstake.estimateGas.stake(
+  const estimateGas = await h4gstake.estimateGas.deposit(
     amount.toString(),
    );
   const tx = await h4gstake.stake(parseEther,{
@@ -101,7 +101,7 @@ export const setCompound = async (
     signer
   );
 
-  const tx = await h4gstake.compound();
+  const tx = await h4gstake.compoundReward();
   await tx.wait();
 };
 
@@ -119,7 +119,7 @@ export const setHarvest = async (
     signer
   );
 
-  const tx = await h4gstake.harvest();
+  const tx = await h4gstake.claimReward();
   await tx.wait();
 };
 
@@ -190,6 +190,6 @@ export const claimBUSD = async (provider, address: string, chainId: number) => {
     signer
   );
 
-  const tx = await h4gstake.claimBusd();
+  const tx = await h4gstake.claimDividend();
   await tx.wait();
 };
