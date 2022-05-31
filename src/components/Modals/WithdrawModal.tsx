@@ -10,15 +10,14 @@ interface IWithdrawModal {
   handleClose?: () => void;
   handleWithdraw: () => Promise<void>;
   withdrawAmount: number;
-  withdrawFee: number;
+ 
 }
 
 const WithdrawModal: React.FC<IWithdrawModal> = ({
   modal,
   handleClose,
   handleWithdraw,
-  withdrawAmount,
-  withdrawFee,
+  withdrawAmount
 }) => {
   return (
     <Backdrop handleClose={handleClose} isOpen={modal}>
@@ -37,25 +36,18 @@ const WithdrawModal: React.FC<IWithdrawModal> = ({
               <div data-position="flex-between">
                 <p>withdraw amount</p>
                 <b>
-                  {new Intl.NumberFormat("en-US", {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 6,
-                  }).format(withdrawAmount + withdrawFee)}
+                  
                   &nbsp;H4G
                 </b>
               </div>
               <div data-position="flex-between">
                 <p>withdraw Fee</p>
-                <b>0.5%</b>
+                <b>50</b>
               </div>
               <div data-position="flex-between">
                 <p>Total token you earn</p>
                 <b>
-                  {new Intl.NumberFormat("en-US", {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 6,
-                  }).format(withdrawAmount)}
-                  &nbsp;H4G
+                  {withdrawAmount}
                 </b>
               </div>
               <Button onClick={() => handleWithdraw()}>Withdraw</Button>

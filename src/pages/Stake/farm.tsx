@@ -15,6 +15,7 @@ import {
   setHarvest,
   setStake,
   withdraw,
+
 } from "../../Utils/stake/contractMethods";
 import { IContractData } from "../../store/types";
 import WithdrawModal from "../../components/Modals/WithdrawModal";
@@ -115,6 +116,7 @@ const Farm: React.FC = () => {
 
   const handleDeposit = async () => {
     if (!account) return;
+    console.log('bal',userData.tokenBalance);
     try {
       if (userData.tokenBalance < Number(deposit)) {
         setTransaction({
@@ -255,14 +257,14 @@ const Farm: React.FC = () => {
           <section>
             <Button
               variant="secondary"
-              disabled={loading || !userData.rewards}
+              disabled={loading || !userData.h4gReward}
               onClick={() => handleCompound()}
             >
               Compound
             </Button>
             <Button
               variant="secondary"
-              disabled={loading || !userData.rewards}
+              disabled={loading || !userData.h4gReward}
               onClick={() => handleHarvest()}
             >
               Harvest
@@ -337,11 +339,11 @@ const Farm: React.FC = () => {
           <div>
             <div data-position="flex-between">
               <p className="primary">Deposit Fee</p>
-              <b>{contractData.depositFee}%</b>
+              <b>{contractData.depositFee}</b>
             </div>
             <div data-position="flex-between">
               <p className="primary">Withdraw Fee</p>
-              <b>{contractData.withdrawFee}%</b>
+              <b>{contractData.withdrawFee}</b>
             </div>
           </div>
           {!account ? (
@@ -363,8 +365,8 @@ const Farm: React.FC = () => {
           modal={withdrawModal}
           handleWithdraw={handleWithdraw}
           handleClose={() => setWithdrawModal(false)}
-          withdrawAmount={userData.withdrawAmount}
-          withdrawFee={userData.withdrawFee}
+          withdrawAmount={userData.totalStaked}
+          
         />
       </div>
     </>

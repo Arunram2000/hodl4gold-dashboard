@@ -89,6 +89,8 @@ const StakingUserContextProvider: React.FC<{ children: ReactNode }> = ({
           chainId,
           totalStaked
         );
+       
+
         const { withdrawAmount, withdrawFee } = await getUserWithdrawAmount(
           provider,
           account,
@@ -103,7 +105,7 @@ const StakingUserContextProvider: React.FC<{ children: ReactNode }> = ({
           totalStaked,
           busdReward,
           h4gReward,
-          withdrawAmount: withdrawAmount + h4gReward,
+          withdrawAmount: totalStaked,
           withdrawFee,
         });
         setIsLoading(false);

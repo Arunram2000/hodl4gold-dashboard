@@ -69,14 +69,18 @@ export const getUserDetails = async (
 ) => {
   const h4gstake = getStakingContract(provider, address, chainId);
 
-  const userDetails = await h4gstake.getUserDetails(address);
+  const userDetails = await h4gstake.userInfo(address);
+
   const formatTotalStaked = ethers.utils.formatUnits(
     userDetails[0].toString(),
     "gwei"
   );
-  const formatBusdReward = ethers.utils.formatEther(userDetails[3].toString());
+  console.log('hel',formatTotalStaked)
+  const busdReward=await h4gstake.pendingDividends(address);
+  const formatBusdReward = ethers.utils.formatEther(busdReward.toString());
+  const h4greward=await h4gstake.pendingReward(address);
   const formatH4gReward = ethers.utils.formatUnits(
-    userDetails[4].toString(),
+    h4greward,
     "gwei"
   );
 
@@ -129,3 +133,5 @@ export const getUserWithdrawAmount = async (
     return { withdrawAmount: 0, withdrawFee: 0 };
   }
 };
+
+
