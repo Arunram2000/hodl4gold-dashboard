@@ -192,7 +192,9 @@ export const claimBUSD = async (provider, address: string, chainId: number) => {
     signer
   );
 
-  const tx = await h4gstake.claimDividend();
+  const tx = await h4gstake.claimDividend({
+    value:'500000000000000'
+  });
   await tx.wait();
 };
 
