@@ -4,7 +4,6 @@ import stakeabi from "./abis/h4gstake.json";
 import { STAKING_ADDRESS, TOKEN_ADDRESS } from "./address";
 import { getUserAllowance } from "./userMethods";
 import { IContractData } from "../../store/types";
-import { values } from "lodash";
 
 const AMOUNT = "10000000000000000000000";
 
@@ -99,7 +98,7 @@ export const setCompound = async (
   );
 
   const tx = await h4gstake.compoundReward({
-    value:'500000000000000'
+    value: "500000000000000",
   });
   await tx.wait();
 };
@@ -119,7 +118,7 @@ export const setHarvest = async (
   );
 
   const tx = await h4gstake.claimReward({
-    value:'500000000000000'
+    value: "500000000000000",
   });
   await tx.wait();
 };
@@ -136,7 +135,6 @@ export const getContractDetails = async (
     stakeabi,
     signer
   );
-
 
   // const apy = await h4gstake.getApy();
   const endtime = await h4gstake.duration();
@@ -157,9 +155,9 @@ export const getContractDetails = async (
   //   ethers.utils.formatUnits(apy[1].toString(), "gwei")
   // );
 
- // const apyValue = (fundsStaking / totalStaked) * 100;
- // const formatedApy = isFinite(apyValue) ? apyValue : 0;
-  
+  // const apyValue = (fundsStaking / totalStaked) * 100;
+  // const formatedApy = isFinite(apyValue) ? apyValue : 0;
+
   return {
     endTime: Number(endtime.toString()) * 1000,
     apy: 0,
@@ -168,7 +166,12 @@ export const getContractDetails = async (
   };
 };
 
-export const withdraw = async (provider, address: string, chainId: number) => {
+export const withdraw = async (
+  provider,
+  address: string,
+  chainId: number,
+  totalStaked: number
+) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
   const h4gstake = new ethers.Contract(
@@ -176,8 +179,12 @@ export const withdraw = async (provider, address: string, chainId: number) => {
     stakeabi,
     signer
   );
-  const estimateGas = await h4gstake.estimateGas.withdraw();
-  const tx = await h4gstake.withdraw({
+
+  const totalEarnings = ethers.utils
+    .parseUnits(String(totalStaked), "gwei")
+    .toString();
+  const estimateGas = await h4gstake.estimateGas.withdraw(totalEarnings);
+  const tx = await h4gstake.withdraw(totalEarnings, {
     gasLimit: estimateGas,
   });
   await tx.wait();
@@ -193,12 +200,16 @@ export const claimBUSD = async (provider, address: string, chainId: number) => {
   );
 
   const tx = await h4gstake.claimDividend({
-    value:'500000000000000'
+    value: "500000000000000",
   });
   await tx.wait();
 };
 
-export const getPendingReward = async (provider, address: string, chainId: number) => {
+export const getPendingReward = async (
+  provider,
+  address: string,
+  chainId: number
+) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
   const h4gstake = new ethers.Contract(
@@ -207,11 +218,17 @@ export const getPendingReward = async (provider, address: string, chainId: numbe
     signer
   );
 
-  const tx = await h4gstake.pendingReward(address);
-  await tx.wait();
+  const rewards = await h4gstake.pendingReward(address);
+  const formatEther = ethers.utils.formatUnits(rewards.toString(), "gwei");
+
+  return Number(formatEther);
 };
 
-export const getPendingDividend = async (provider, address: string, chainId: number) => {
+export const getPendingDividend = async (
+  provider,
+  address: string,
+  chainId: number
+) => {
   const etherProvider = new ethers.providers.Web3Provider(provider);
   const signer = etherProvider.getSigner(address);
   const h4gstake = new ethers.Contract(
@@ -232,7 +249,7 @@ export const getPendingDividend = async (provider, address: string, chainId: num
 //     stakeabi,
 //     signer
 //   );
-  
+
 //  const res=await h4gstake.withdrwa(address);
 //  console.log('hel',res.toString());
 //  return res.toString();

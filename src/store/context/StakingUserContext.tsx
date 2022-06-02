@@ -7,12 +7,12 @@ import React, {
 } from "react";
 import { useWeb3React } from "@web3-react/core";
 import {
-  getRewardAmount,
   getTokenBalance,
   getUserAllowance,
   getUserDetails,
   getUserWithdrawAmount,
 } from "../../Utils/stake/userMethods";
+import { getPendingReward } from "../../Utils/stake/contractMethods";
 
 interface IUser {
   tokenBalance: number;
@@ -83,15 +83,9 @@ const StakingUserContextProvider: React.FC<{ children: ReactNode }> = ({
           account,
           chainId
         );
-        const rewards = await getRewardAmount(
-          provider,
-          account,
-          chainId,
-          totalStaked
-        );
-       
+        const rewards = await getPendingReward(provider, account, chainId);
 
-        const { withdrawAmount, withdrawFee } = await getUserWithdrawAmount(
+        const { withdrawFee } = await getUserWithdrawAmount(
           provider,
           account,
           chainId

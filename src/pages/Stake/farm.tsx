@@ -10,17 +10,16 @@ import { TransactionContext } from "../../store/context/TransactionContext";
 import {
   claimBUSD,
   getContractDetails,
+  getPendingReward,
   setApprove,
   setCompound,
   setHarvest,
   setStake,
   withdraw,
-
 } from "../../Utils/stake/contractMethods";
 import { IContractData } from "../../store/types";
 import WithdrawModal from "../../components/Modals/WithdrawModal";
 import "./Home.scss";
-import { getRewardAmount } from "../../Utils/stake/userMethods";
 
 const Farm: React.FC = () => {
   const { account, library, chainId } = useWeb3React();
@@ -55,11 +54,10 @@ const Farm: React.FC = () => {
 
   const handleGetlatestData = useCallback(async () => {
     if (account && userData.totalStaked) {
-      const rewards = await getRewardAmount(
+      const rewards = await getPendingReward(
         library?.provider,
         account,
-        chainId,
-        userData.totalStaked
+        chainId
       );
 
       setUserData({
@@ -116,7 +114,7 @@ const Farm: React.FC = () => {
 
   const handleDeposit = async () => {
     if (!account) return;
-    console.log('bal',userData.tokenBalance);
+    console.log("bal", userData.tokenBalance);
     try {
       if (userData.tokenBalance < Number(deposit)) {
         setTransaction({
@@ -206,7 +204,7 @@ const Farm: React.FC = () => {
     if (!account) return;
     try {
       setTransaction({ loading: true, status: "pending" });
-      await withdraw(library?.provider, account, chainId);
+      await withdraw(library?.provider, account, chainId, userData.totalStaked);
       await refetch();
       setTransaction({ loading: true, status: "success" });
     } catch (error: any) {
@@ -366,7 +364,6 @@ const Farm: React.FC = () => {
           handleWithdraw={handleWithdraw}
           handleClose={() => setWithdrawModal(false)}
           withdrawAmount={userData.totalStaked}
-          
         />
       </div>
     </>

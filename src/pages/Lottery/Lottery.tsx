@@ -64,7 +64,7 @@ const Lottery: React.FC = () => {
 
   const handleBuyTicket = async (lotteryNumberList: number[]) => {
     if (!account) return;
-    if (tokenBalance < 1)
+    if (tokenBalance < lotteryNumberList.length)
       return setTransaction({
         loading: true,
         status: "error",

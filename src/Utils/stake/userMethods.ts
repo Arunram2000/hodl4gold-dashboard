@@ -75,14 +75,11 @@ export const getUserDetails = async (
     userDetails[0].toString(),
     "gwei"
   );
-  console.log('hel',formatTotalStaked)
-  const busdReward=await h4gstake.pendingDividends(address);
+
+  const busdReward = await h4gstake.pendingDividends(address);
   const formatBusdReward = ethers.utils.formatEther(busdReward.toString());
-  const h4greward=await h4gstake.pendingReward(address);
-  const formatH4gReward = ethers.utils.formatUnits(
-    h4greward,
-    "gwei"
-  );
+  const h4greward = await h4gstake.pendingReward(address);
+  const formatH4gReward = ethers.utils.formatUnits(h4greward, "gwei");
 
   return {
     totalStaked: Number(formatTotalStaked),
@@ -133,5 +130,3 @@ export const getUserWithdrawAmount = async (
     return { withdrawAmount: 0, withdrawFee: 0 };
   }
 };
-
-
